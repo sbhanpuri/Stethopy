@@ -1,31 +1,16 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#10B981',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-});
-  
+import { View, Text, Button } from 'react-native';
 
-
-
-const WelcomeScreen = () => {
-  const navigation = useNavigation()
+const WelcomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text>Welcome!</Text>
-      <Text>Track your heart rate!</Text>
-      {/* <Button
-        title="Go to My Recipes"
-        onPress={() => navigation.navigate('Recipe')}
-      /> */}
-      <Text></Text>
+    <View>
+      <Text>Welcome to the App!</Text>
+      <Button
+        title="Go to Heart Rate Screen"
+        onPress={() => navigation.navigate('HeartRateScreen')}
+      />
     </View>
   );
-}
+};
 
 export default WelcomeScreen;

@@ -17,6 +17,6 @@ const RootStack = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
+}
 
 export default RootStack;
