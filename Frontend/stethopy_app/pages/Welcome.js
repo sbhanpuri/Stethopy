@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet} from 'react-native';
+import BottomTabNavigator from '../components/BottomTabNavigator';
 
 const WelcomeScreen = ({ navigation }) => {
   return (
@@ -8,12 +9,7 @@ const WelcomeScreen = ({ navigation }) => {
         STETHOPY
       </Text>
       
-      <Button
-        mode="contained"
-        title="Go to Heart Rate Screen"
-        onPress={() => navigation.navigate('HeartRateScreen')}
-        style={styles.button}
-      />
+      <BottomTabNavigator></BottomTabNavigator>
     </View>
   );
 };
