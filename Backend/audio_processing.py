@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 @app.route('/process-audio', methods=['POST'])
 def process_audio():
+    
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
     RATE = 44100
@@ -32,15 +33,16 @@ def process_audio():
     p.terminate()
 
     # Process audio data (you need to implement this part)
-    processed_data = process_audio_data(frames)
+    cleaned_audio = clean_audio(frames)
 
+    #with app.app_context():
     # Save the processed audio as a WAV file
-    create_wave_file(frames, "output.wav")
+    create_wave_file(cleaned_audio, "output.wav")
 
-    return jsonify({'result': processed_data})
+    return jsonify({'result': "output.wav"})
 
 
-def process_audio_data(data):
+def clean_audio(data):
     # Implement your audio processing logic here
     # This function should return the processed audio data
     processed_data = data  # Placeholder, implement your logic here
@@ -58,6 +60,12 @@ def create_wave_file(data, filename):
         wf.setframerate(RATE)
         wf.writeframes(b"".join(data))
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    #return filename
+        
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=50432)
+
+
+
+#process_audio()
