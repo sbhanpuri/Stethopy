@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet} from 'react-native';
+import BottomTabNavigator from '../components/BottomTabNavigator';
 
 function HeartRateScreen({ navigation }) {
   return (
@@ -7,12 +8,8 @@ function HeartRateScreen({ navigation }) {
       <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue-Thin', fontWeight: 'bold', color: 'black' }}>
         WAVE FILE
       </Text>
-      <Button
-        mode="contained"
-        title="Go to Profile"
-        onPress={() => navigation.navigate('Profile')}
-        style={styles.button}
-      />
+      
+      <BottomTabNavigator></BottomTabNavigator>
     </View>
   );
 }

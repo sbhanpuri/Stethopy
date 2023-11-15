@@ -1,3 +1,4 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -28,6 +29,7 @@ const ProfileScreen = () => {
       alert('Permission to access photos is required!');
       return;
     }
+  
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.cancelled) {
       console.log('Selected image:', result.uri);
