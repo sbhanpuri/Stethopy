@@ -1,9 +1,9 @@
 import pyaudio
 import wave
 from flask import Flask, jsonify
-
+from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/process-audio', methods=['POST'])
 def process_audio():
@@ -65,7 +65,6 @@ def create_wave_file(data, filename):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=50432)
-
 
 
 #process_audio()
