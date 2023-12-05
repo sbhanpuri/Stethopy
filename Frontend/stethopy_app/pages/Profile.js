@@ -1,155 +1,216 @@
-import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, Text, Button, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/native';
 
-const ProfileScreen = () => {
-  const [isEditing, setEditing] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    Username: 'JohnDoe',
-    Age: 30,
-    Dob: '01/01/1993',
-    Sex: 'Male',
-    Height: '5\'10"',
-    Weight: '160 lbs',
-    BloodType: 'A+',
-    Conditions: 'None',
-    //profileImage: null,
+const ProfilePage = () => {
+  const [isPersonalInfoCollapsed, setIsPersonalInfoCollapsed] = useState(true);
+  const [isMedicalInfoCollapsed, setIsMedicalInfoCollapsed] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const navigation = useNavigation();
+  const [userPhoto, setUserPhoto] = useState(null);
+  const [editableFields, setEditableFields] = useState({
+    name: 'User\'s Name',
+    dateOfBirth: 'January 1, 1990',
+    phoneNumber: '123-456-7890',
+    email: 'user@example.com',
+    address: '123 Street, City, Country',
+    sex: 'Male',
+    weight: '70 kg',
+    height: '180 cm',
+    bloodType: 'A+',
+    preexistingConditions: 'None',
   });
-
-  const saveUserInfo = (updatedInfo) => {
-    console.log('Updating user information:', updatedInfo);
-    setEditing(false);
-    setUserInfo(updatedInfo);
-  };
 
   const selectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Permission to access photos is required!');
-      return;
-    }
-  
+
+  if (status !== 'granted') {
+    alert('Permission to access photos is required!');
+    return;
+  }
+
+  try {
     const result = await ImagePicker.launchImageLibraryAsync();
+
     if (!result.cancelled) {
-      console.log('Selected image:', result.uri);
-      setUserInfo({ ...userInfo, profileImage: result.uri });
+      console.log('Selected image URI:', result.assets[0].uri);
+      setUserPhoto(result.assets[0].uri);
+    } else {
+      console.log('Image selection cancelled');
+      // Handle the case when the image selection is canceled after permission is granted
+      // You can add your custom logic or inform the user about the canceled selection.
     }
+  } catch (error) {
+    console.log('ImagePicker Error:', error);
+    // Handle error from ImagePicker (e.g., display an error message to the user)
+  }
   };
 
-  const renderEditableField = (label, value, key) => {
-    return (
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldLabel}>{label}:</Text>
-        {isEditing ? (
-          <TextInput
-            style={styles.input}
-            placeholder={label}
-            value={value}
-            onChangeText={(text) => setUserInfo({ ...userInfo, [key]: text })}
-          />
-        ) : (
-          <Text style={styles.fieldValue}>{value}</Text>
-        )}
-      </View>
-    );
+  const handleEditInformation = () => {
+    setIsEditMode(true);
+    setIsPersonalInfoCollapsed(false);
+    setIsMedicalInfoCollapsed(false);
   };
+
+  const handleSaveChanges = () => {
+    setIsEditMode(false);
+    setIsPersonalInfoCollapsed(true);
+    setIsMedicalInfoCollapsed(true);
+  };
+
+  const renderEditableFields = (key, title) => (
+    <View style={styles.fieldContainer}>
+      <Text style={styles.fieldTitle}>{title}</Text>
+      <TextInput
+        style={styles.editableInput}
+        value={editableFields[key]}
+        onChangeText={(text) =>
+          setEditableFields((prevFields) => ({
+            ...prevFields,
+            [key]: text,
+          }))
+        }
+        placeholder={`Enter ${title}`}
+        placeholderTextColor="grey"
+        editable={isEditMode}
+        multiline={key === 'address' || key === 'preexistingConditions'}
+        numberOfLines={3}
+      />
+    </View>
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.photoContainer}>
-        <TouchableOpacity style={styles.addPhotoButton} onPress={selectImage}>
-          {userInfo.profileImage ? (
-            <Image source={{ uri: userInfo.profileImage }} style={styles.profileImage} />
+      <TouchableOpacity onPress={selectImage}>
+        <View style={styles.profileImage}>
+         {userPhoto ? (
+            <Image source={{ uri: userPhoto }} style={styles.profileImage} />
           ) : (
-            <View style={styles.uploadButtonCircle}>
-              <Text style={styles.uploadText}>Add a Photo</Text>
-            </View>
+            <Text style={styles.uploadText}>Add Photo</Text>
           )}
+        </View>
+      </TouchableOpacity>
+
+      <Text style={styles.userName}>User's Name</Text>
+      <Text style={styles.patientID}>Patient ID: #123456</Text>
+
+      <TouchableOpacity
+        onPress={() => setIsPersonalInfoCollapsed(!isPersonalInfoCollapsed)}
+        style={styles.collapseButton}
+      >
+        <Text>Personal Information</Text>
+      </TouchableOpacity>
+      {!isPersonalInfoCollapsed && (
+        <View style={styles.infoContainer}>
+          {renderEditableFields('name', 'Name')}
+          {renderEditableFields('dateOfBirth', 'Date of Birth')}
+          {renderEditableFields('phoneNumber', 'Phone Number')}
+          {renderEditableFields('email', 'Email')}
+          {renderEditableFields('address', 'Address')}
+        </View>
+      )}
+
+      <TouchableOpacity
+        onPress={() => setIsMedicalInfoCollapsed(!isMedicalInfoCollapsed)}
+        style={styles.collapseButton}
+      >
+        <Text>Medical Information</Text>
+      </TouchableOpacity>
+      {!isMedicalInfoCollapsed && (
+        <View style={styles.infoContainer}>
+          {renderEditableFields('sex', 'Sex')}
+          {renderEditableFields('weight', 'Weight')}
+          {renderEditableFields('height', 'Height')}
+          {renderEditableFields('bloodType', 'Blood Type')}
+          {renderEditableFields('preexistingConditions', 'Preexisting Conditions')}
+        </View>
+      )}
+
+      {isEditMode && (
+        <TouchableOpacity onPress={handleSaveChanges} style={styles.saveButton}>
+          <Text>Save Changes</Text>
         </TouchableOpacity>
-      </View>
-      <Button
-        title={isEditing ? 'Save' : 'Edit'}
-        onPress={() => {
-          if (isEditing) {
-            saveUserInfo(userInfo);
-          }
-          setEditing(!isEditing);
-        }}
-      />
-      <View style={styles.userInfoContainer}>
-        {Object.entries(userInfo).map(([key, value]) => (
-          <View key={key} style={styles.userInfoItem}>
-            {renderEditableField(key, value, key)}
-          </View>
-        ))}
-      </View>
+      )}
+
+      <TouchableOpacity onPress={handleEditInformation} style={styles.editButton}>
+        <Text>Edit Information</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    backgroundColor: '#F5F5F5',
-  },
-  photoContainer: {
+    flexGrow: 1,
     alignItems: 'center',
-    marginVertical: 50,
-  },
-  addPhotoButton: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: 'gray',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  uploadButtonCircle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  uploadText: {
-    fontSize: 16,
-    color: 'white',
-  },
-  fieldContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  fieldLabel: {
-    flex: 1,
-    fontSize: 18,
-  },
-  fieldValue: {
-    flex: 3,
-    fontSize: 18,
-  },
-  input: {
-    flex: 3,
-    fontSize: 18,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-  },
-  userInfoContainer: {
-    width: '100%',
-  },
-  userInfoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
-    paddingVertical: 10,
+    paddingTop: 40,
   },
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: 'lightgrey',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  patientID: {
+    fontSize: 16,
+    marginTop: 5,
+  },
+  collapseButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'lightblue',
+    borderRadius: 8,
+  },
+  infoContainer: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: 'lightblue',
+    padding: 10,
+    width: 250,
+  },
+  fieldContainer: {
+    marginBottom: 10,
+  },
+  fieldTitle: {
+    fontWeight: 'bold',
+  },
+  editableInput: {
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    borderRadius: 5,
+    padding: 8,
+  },
+  editButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 10,
+    backgroundColor: 'lightblue',
+    borderRadius: 8,
+  },
+  saveButton: {
+    marginTop: 20,
+    marginBottom: 40,
+    padding: 10,
+    backgroundColor: 'lightgreen',
+    borderRadius: 8,
   },
 });
 
-export default ProfileScreen;
+export default ProfilePage;
