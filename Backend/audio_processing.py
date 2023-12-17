@@ -1,9 +1,10 @@
 import pyaudio
 import wave
 from flask import Flask, jsonify
-
+from flask_cors import CORS
+import noisereduce
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/process-audio', methods=['POST'])
 def process_audio():
@@ -46,6 +47,9 @@ def clean_audio(data):
     # Implement your audio processing logic here
     # This function should return the processed audio data
     processed_data = data  # Placeholder, implement your logic here
+    #NEED TO PUT IN PARAMETERS
+    
+    #noisereduce nr = nr()
     return processed_data
 
 
@@ -65,7 +69,6 @@ def create_wave_file(data, filename):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=50432)
-
 
 
 #process_audio()

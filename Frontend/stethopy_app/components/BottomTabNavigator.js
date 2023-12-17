@@ -13,12 +13,12 @@ const BottomTabNavigator = () => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('HeartRateScreen')}>
-            <MaterialCommunityIcons name="format-list-bulleted" size={24} color="black" />
+            <MaterialCommunityIcons name="heart-pulse" size={24} color="black" />
             <Text style={styles.text}>HeartRateScreen</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('Profile')}>
-            <MaterialCommunityIcons name="calendar-blank-outline" size={24} color="black" />
+            <MaterialCommunityIcons name="account" size={24} color="black" />
             <Text style={styles.text}>Profile</Text>
         </TouchableOpacity>
         
