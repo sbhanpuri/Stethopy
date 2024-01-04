@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Import your screens
-import WelcomeScreen from '../pages/Welcome';
+import HomeScreen from '../pages/Home';
 import HeartRateScreen from '../pages/HeartRateScreen';
 import Profile from '../pages/Profile';
 
@@ -12,8 +12,8 @@ const Stack = createNativeStackNavigator();
 const RootStack = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome">
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="HeartRateScreen" component={HeartRateScreen} />
         <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>

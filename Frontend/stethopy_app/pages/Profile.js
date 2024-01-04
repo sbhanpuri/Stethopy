@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+import BottomTabNavigator from '../components/BottomTabNavigator';
 
 const ProfilePage = () => {
   const [isPersonalInfoCollapsed, setIsPersonalInfoCollapsed] = useState(true);
@@ -90,6 +91,7 @@ const ProfilePage = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <BottomTabNavigator></BottomTabNavigator>
       <TouchableOpacity onPress={selectImage}>
         <View style={styles.profileImage}>
          {userPhoto ? (
@@ -145,6 +147,8 @@ const ProfilePage = () => {
         <Text>Edit Information</Text>
       </TouchableOpacity>
     </ScrollView>
+
+    
   );
 };
 

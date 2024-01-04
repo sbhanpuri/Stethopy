@@ -7,14 +7,14 @@ const BottomTabNavigator = () => {
     const navigation = useNavigation()
     return (
       <View style={styles.horizontalContainer}>
-        <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('Welcome')}>
+        <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('Home')}>
             <Ionicons name="home-outline" size={24} color="black" />            
-            <Text style={styles.text}>Welcome</Text>
+            <Text style={styles.text}>Home</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('HeartRateScreen')}>
             <MaterialCommunityIcons name="heart-pulse" size={24} color="black" />
-            <Text style={styles.text}>HeartRateScreen</Text>
+            <Text style={styles.text}>Heart Rate</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('Profile')}>
