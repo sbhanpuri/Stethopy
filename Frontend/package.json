@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "expo": "^49.0.13"
+    "expo": "^49.0.13",
+    "react-native-audio-record": "^0.2.2"
   }
 }
