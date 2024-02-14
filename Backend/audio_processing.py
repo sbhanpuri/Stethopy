@@ -15,7 +15,8 @@ CORS(app)
 @app.route('/process-audio', methods=['POST'])
 def process_audio():
     data = request.json.get('audio_data')
-
+    #print(data)
+    print("Hello")
     # Process audio data (you need to implement this part)
     cleaned_audio = clean_audio(data)
 
@@ -35,27 +36,31 @@ def process_audio():
     return jsonify({'data': output_filename, 'waveform_plot': plot_base64})
 
 
-def generate_waveform_plot(output_filename):
+def generate_waveform_plot(output_filename, max_time_interval=10):
     file = wave.open(output_filename, 'rb')
 
     sample_freq = file.getframerate()
     frames = file.getnframes()
     signal_wave = file.readframes(-1)
 
-    file.close
+    file.close()
     time = frames / sample_freq
 
+    if time > max_time_interval:
+        frames_to_keep = int(max_time_interval * sample_freq)
+        signal_wave = signal_wave[:frames_to_keep * file.getsampwidth()]
+
     audio_array = np.frombuffer(signal_wave, dtype=np.int16)
+    times = np.linspace(0, time, num=len(audio_array))
 
-    times = np.linspace(0, time, num=frames)
-
-    plt.figure(figsize=(15,5))
+    plt.figure(figsize=(15, 5))
     plt.plot(times, audio_array)
     plt.ylabel('Signal Wave')
     plt.xlabel('Time (s)')
-    plt.xlim(0, time)
-    plt.title('The Thing I Just Recorded!!')
+    plt.xlim(0, max_time_interval)
+    plt.title('Heart Rate Visualization')
     return plt
+
 
 def clean_audio(data):
     # Implement your audio processing logic here
