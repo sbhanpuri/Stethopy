@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
 import BottomTabNavigator from '../components/BottomTabNavigator';
 import React, { useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
@@ -72,9 +72,9 @@ function HeartRateScreen({ navigation }) {
 
         });
 
-        // const playbackObject = new Audio.Sound();
-        // await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}`});
-        // await playbackObject.playAsync();
+        const playbackObject = new Audio.Sound();
+        await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}`});
+        await playbackObject.playAsync();
 
         setRecording(null);
         setRecordingStatus('stopped');
@@ -101,7 +101,8 @@ function HeartRateScreen({ navigation }) {
             audio_data: base64String
           };
           // Send the audio file to the Flask backend
-          const response = await axios.post('http://192.168.86.249:50432/process-audio', jsonPayload);
+          //if you want to try using the button, replace the IP address with yours
+          const response = await axios.post('http://10.193.74.127:50432/process-audio', jsonPayload);
           console.log(response);
 
           console.log('Successfully sent audio file to backend and retrieved output.wav from post request');
@@ -134,9 +135,14 @@ function HeartRateScreen({ navigation }) {
       <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}
       </Text>
 
+      <ScrollView horizontal={true}>
       {waveformPlot && (
-        <Image source={{ uri: `data:image/png;base64,${waveformPlot}` }} style={{ width: 300, height: 150 }} />
+        <Image 
+          source={{ uri: `data:image/png;base64,${waveformPlot}` }} 
+          style={{ width: 1000, height: 200 }}  // Adjust width as needed
+        />
       )}
+    </ScrollView>
 
       <BottomTabNavigator></BottomTabNavigator>
     </View>
