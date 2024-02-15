@@ -102,8 +102,8 @@ function HeartRateScreen({ navigation }) {
           };
           // Send the audio file to the Flask backend
           //if you want to try using the button, replace the IP address with yours
-          const response = await axios.post('http://10.193.74.127:50432/process-audio', jsonPayload);
-          console.log(response);
+          const response = await axios.post('http://:50432/process-audio', jsonPayload);
+          // console.log(response);
 
           console.log('Successfully sent audio file to backend and retrieved output.wav from post request');
 
@@ -136,13 +136,13 @@ function HeartRateScreen({ navigation }) {
       </Text>
 
       <ScrollView horizontal={true}>
-      {waveformPlot && (
-        <Image 
-          source={{ uri: `data:image/png;base64,${waveformPlot}` }} 
-          style={{ width: 1000, height: 200 }}  // Adjust width as needed
-        />
-      )}
-    </ScrollView>
+        {waveformPlot && (
+          <Image 
+            source={{ uri: `data:image/png;base64,${waveformPlot}` }} 
+            style={{ width: 1200, height: 400 }}  // Adjust width as needed
+          />
+        )}
+      </ScrollView>
 
       <BottomTabNavigator></BottomTabNavigator>
     </View>
