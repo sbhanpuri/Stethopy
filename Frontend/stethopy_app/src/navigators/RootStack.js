@@ -4,12 +4,27 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Import your screens
 import HomeScreen from '../pages/Home';
-import HeartRateScreen from '../pages/HeartRateScreen';
+import HeartRateScreen from '../pages/HeartRateListening/HeartRateScreen';
 import Profile from '../pages/Profile';
 import SignInPage from '../pages/SignInPage';
 import SignUpPage from '../pages/SignUpPage';
 
+//Root stack for main pages
 const Stack = createNativeStackNavigator();
+
+// //nested stack to handle navigations from heartratescreen page
+// const HeartRateStack = createNativeStackNavigator();
+
+// const HeartRateStackActual = () => {
+//   return (
+//     <NavigationContainer>
+
+//       <HeartRateStack.Navigator initialRouteName="HeartRateScreen">
+//         <HeartRateStack.Screen name="ListeningSessions" component={ListeningSessions} />
+//       </HeartRateStack.Navigator>
+//     </NavigationContainer>
+//   );
+// }
 
 const RootStack = () => {
   return (
@@ -21,6 +36,7 @@ const RootStack = () => {
         <Stack.Screen name="Sign In" component={SignInPage} />
         <Stack.Screen name="Sign Up" component={SignUpPage} />
       </Stack.Navigator>
+
     </NavigationContainer>
   );
 }
