@@ -145,6 +145,8 @@ function HeartRateScreen({ navigation }) {
       </ScrollView>
 
       <BottomTabNavigator></BottomTabNavigator>
+
+      
     </View>
   );
 }
@@ -164,8 +166,8 @@ const styles = StyleSheet.create({
   },
   customButton: {
     backgroundColor: 'white', // Change button background color
-    padding: 15,
-    borderRadius: 10, // Adjust border radius for rounded corners
+    padding: 5,
+    borderRadius: 1, // Adjust border radius for rounded corners
     marginTop: 20,
   },
   buttonText: {
@@ -177,8 +179,8 @@ const styles = StyleSheet.create({
   recordButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 128,
-    height: 128,
+    width: 100,
+    height: 100,
     borderRadius: 64,
     backgroundColor: 'red',
   },
