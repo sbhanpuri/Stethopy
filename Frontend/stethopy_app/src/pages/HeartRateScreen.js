@@ -101,7 +101,7 @@ function ListeningSessions({ navigation }) {
             audio_data: base64String
           };
           // Send the audio file to the Flask backend
-          const response = await axios.post('http://10.193.74.127:50432/process-audio', jsonPayload);
+          const response = await axios.post('http://50432/process-audio', jsonPayload);
           console.log(response);
 
           console.log('Successfully sent audio file to backend and retrieved output.wav from post request');
