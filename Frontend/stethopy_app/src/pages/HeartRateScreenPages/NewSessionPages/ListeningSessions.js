@@ -1,11 +1,16 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import BottomTabNavigator from '../../components/BottomTabNavigator';
+import BottomTabNavigator from '../../../components/BottomTabNavigator';
 import React, { useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import base64 from 'base64-js';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
+
+/**
+ * !!!!!!
+ * Not to be used in actual app design, but contains logic for recording button!
+ */
 
 function ListeningSessions({ navigation }) {
 
