@@ -15,6 +15,7 @@
     "@mui/material": "^5.14.15",
     "@mui/styled-engine-sc": "^6.0.0-alpha.3",
     "@react-native-community/audio-toolkit": "^2.0.3",
+    "@react-native-picker/picker": "^2.6.1",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
