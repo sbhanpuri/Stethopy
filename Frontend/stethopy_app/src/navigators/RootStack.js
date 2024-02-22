@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Import your screens
 import HomeScreen from '../pages/Home';
-import HeartRateScreen from '../pages/HeartRateListening/HeartRateScreen';
+import HeartRateScreen from '../pages/HeartRateScreen';
 import Profile from '../pages/Profile';
 import SignInPage from '../pages/SignInPage';
 import SignUpPage from '../pages/SignUpPage';

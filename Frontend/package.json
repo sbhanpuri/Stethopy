@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-native-picker/picker": "^2.6.1",
     "expo": "^49.0.13",
     "react-native-audio-record": "^0.2.2"
   }
