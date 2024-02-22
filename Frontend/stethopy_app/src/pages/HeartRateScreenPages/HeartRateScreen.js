@@ -7,6 +7,12 @@ import base64 from 'base64-js';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 
+/**
+ * This page serves as the landing page to either start a new heart recording or view past heart recordings
+ * 
+ * 
+ */
+
 function HeartRateScreen({ navigation }) {
 
 
