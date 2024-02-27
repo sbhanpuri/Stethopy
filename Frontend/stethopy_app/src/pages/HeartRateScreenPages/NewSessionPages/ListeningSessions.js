@@ -128,6 +128,18 @@ function ListeningSessions({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('HeartRecordStep1');
+          console.log('You tapped the button!');
+        }}
+        style={styles.customButton}
+      >
+        <Text style={styles.buttonLabel}>Heart Record Step 1</Text>
+      </TouchableOpacity>
+
+
       <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue-Thin', fontWeight: 'bold', color: 'black' }}>
         Observe your Heart Rate:
       </Text>
@@ -165,9 +177,11 @@ const styles = StyleSheet.create({
   },
   customButton: {
     backgroundColor: 'white', // Change button background color
-    padding: 5,
-    borderRadius: 1, // Adjust border radius for rounded corners
+    padding: 15,
+    borderRadius: 10, // Adjust border radius for rounded corners
     marginTop: 20,
+    width: 200,
+    height: 50,
   },
   buttonText: {
     color: 'black', // Change text color

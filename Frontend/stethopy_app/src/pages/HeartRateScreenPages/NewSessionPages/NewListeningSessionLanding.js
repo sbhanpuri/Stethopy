@@ -6,8 +6,10 @@ const NewListeningSessionLanding = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 50, fontFamily: 'HelveticaNeue-Thin', fontWeight: 'bold', color: 'black' }}>
-        STETHOPY
+        View your Session!
       </Text>
+      
+
       
       <BottomTabNavigator></BottomTabNavigator>
     </View>
