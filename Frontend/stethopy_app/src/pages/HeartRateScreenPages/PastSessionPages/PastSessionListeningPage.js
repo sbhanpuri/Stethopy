@@ -5,8 +5,8 @@ import BottomTabNavigator from '../../../components/BottomTabNavigator';;
 const PastSessionListeningPage = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 50, fontFamily: 'HelveticaNeue-Thin', fontWeight: 'bold', color: 'black' }}>
-        STETHOPY
+      <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue-Thin', fontWeight: 'bold', color: 'black' }}>
+        PastSessionListeningPage
       </Text>
       
       <BottomTabNavigator></BottomTabNavigator>

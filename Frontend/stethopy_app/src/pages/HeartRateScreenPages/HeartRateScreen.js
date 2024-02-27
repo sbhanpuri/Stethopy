@@ -19,16 +19,26 @@ function HeartRateScreen({ navigation }) {
   return (
 
     <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('ListeningSessions');
+          console.log('You tapped the button!');
+        }}
+        style={styles.customButton}
+      >
+        <Text style={styles.buttonLabel}>New Listening Session</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
-      onPress={() => {navigation.navigate('ListeningSessions')
-      console.log('You tapped the button!');
-      }}
-      title="New Listening Session"
-      style = {styles.customButton}
-      />
-
-    </View>
+        onPress={() => {
+          navigation.navigate('PastSessionListeningPage');
+          console.log('You tapped the button!');
+        }}
+        style={styles.customButton}
+      >
+        <Text style={styles.buttonLabel}>Past Listening Sessions</Text>
+      </TouchableOpacity>
+  </View>
 
   );
 }
