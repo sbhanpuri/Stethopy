@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 import sqlalchemy
 import datetime
-
+from Backend.instances import config
 Base = sqlalchemy.orm.declarative_base()
 
 class Doctor(Base):
@@ -28,8 +28,8 @@ class Doctor(Base):
         self.education = education
         self.years_of_experience = years_of_experience
         self.profile_photo_id = profile_photo_id
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<Doctor(id={self.id}, name='{self.name}', specialization='{self.specialization}')>"
@@ -59,8 +59,8 @@ class Patient(Base):
         self.weight = weight
         self.height = height
         self.profile_photo_id = profile_photo_id
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<Patient(id={self.id}, name='{self.name}')>"
@@ -82,8 +82,8 @@ class DoctorAvailability(Base):
         self.day_of_week = day_of_week
         self.start_time = start_time
         self.end_time = end_time
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<DoctorAvailability(id={self.id}, doctor_id={self.doctor_id}, day_of_week='{self.day_of_week}')>"
@@ -104,8 +104,8 @@ class DoctorPatient(Base):
         self.doctor_id = doctor_id
         self.patient_id = patient_id
         self.relationship_start_date = relationship_start_date
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<DoctorPatient(id={self.id}, doctor_id={self.doctor_id}, patient_id={self.patient_id})>"
@@ -133,8 +133,8 @@ class Appointments(Base):
         self.appointment_time = appointment_time
         self.notes = notes
         self.appointment_type = appointment_type
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<Appointments(id={self.id}, doctor_id={self.doctor_id}, patient_id={self.patient_id})>"
@@ -156,8 +156,8 @@ class AudioRecords(Base):
         self.file_path = file_path
         self.recording_date = recording_date
         self.recording_type = recording_type
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<AudioRecords(id={self.id}, patient_id={self.patient_id}, recording_type='{self.recording_type}')>"
@@ -188,8 +188,8 @@ class CalendarEvents(Base):
         self.event_type = event_type
         self.doctor_id = doctor_id
         self.patient_id = patient_id
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<CalendarEvents(id={self.id}, user_type='{self.user_type}', date='{self.date}')>"
@@ -207,8 +207,8 @@ class Holidays(Base):
         self.name = name
         self.date = date
         self.description = description
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<Holidays(id={self.id}, name='{self.name}', date='{self.date}')>"
@@ -230,8 +230,8 @@ class DoctorAvailabilityExceptions(Base):
         self.date = date
         self.is_available = is_available
         self.reason = reason
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<DoctorAvailabilityExceptions(id={self.id}, doctor_id={self.doctor_id}, date='{self.date}', is_available={self.is_available})>"
@@ -249,14 +249,14 @@ class AudioVisualizations(Base):
     def __init__(self, audio_id, file_path, created_at=None, updated_at=None):
         self.audio_id = audio_id
         self.file_path = file_path
-        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.UTC)
-        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.UTC)
+        self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
         return f"<AudioVisualizations(id={self.id}, audio_id={self.audio_id})>"
 
 # setup database connection
-engine = create_engine('mysql://root:Socrosse17@localhost:3306/Stethopy')
+engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
 Base.metadata.create_all(engine)
 
 # example usage
@@ -317,3 +317,15 @@ if len(cardiologists) == 0 :
 # always end with closing session
 session.close()
 
+
+# audio, patient, doctor profile
+
+# do the post and fetching functions
+
+# add session number for recordings and visualizations
+
+# recordings and visualizations should have positions column
+
+# return the date for the recordings and visualizations
+
+# do smaller functions for fetching i.e. break up visualization and recordings as different functions 
