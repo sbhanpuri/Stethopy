@@ -256,7 +256,7 @@ class AudioVisualizations(Base):
         return f"<AudioVisualizations(id={self.id}, audio_id={self.audio_id})>"
 
 # setup database connection
-engine = create_engine('mysql://root:Socrosse17@localhost:3306/Stethopy')
+engine = create_engine('mysql://root:safiyabhanpuri@localhost:3306/Stethopy')
 Base.metadata.create_all(engine)
 
 # example usage
