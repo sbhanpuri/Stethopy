@@ -11,7 +11,7 @@ const HeartRecordStep1 = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-          Measurement 1: Right heart
+          1st Measurement: Right heart
         </Text>
         <Image 
           source={RecordPageImage}
@@ -21,6 +21,9 @@ const HeartRecordStep1 = ({ navigation }) => {
           source={Circle}
           style={styles.circle}
         />
+        <Text style={styles.description}>
+            Place Stethoscope at Location Indicated by Red Circle
+        </Text> 
         
         <TouchableOpacity
           onPress={() => {
@@ -56,6 +59,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 100,
     marginBottom: -100,
+  },
+  description: {
+    fontSize: 14,
+    fontFamily: 'HelveticaNeue-Thin',
+    marginBottom: 15,
+    fontWeight: 'bold',
+    marginTop: 125,
+    marginBottom: -150,
+    backgroundColor: 'red',
+    justifyContent: 'center',
   },
   customButton: {
     backgroundColor: 'white', // Change button background color
