@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet} from 'react-native';
+import { View, Text, Button, StyleSheet, Image} from 'react-native';
 import BottomTabNavigator from '../components/BottomTabNavigator';
 
 const HomeScreen = ({ navigation }) => {
@@ -8,7 +8,6 @@ const HomeScreen = ({ navigation }) => {
       <Text style={{ fontSize: 50, fontFamily: 'HelveticaNeue-Thin', fontWeight: 'bold', color: 'black' }}>
         STETHOPY
       </Text>
-      
       <BottomTabNavigator></BottomTabNavigator>
     </View>
   );
