@@ -33,6 +33,21 @@ class Doctor(Base):
 
     def __repr__(self):
         return f"<Doctor(id={self.id}, name='{self.name}', specialization='{self.specialization}')>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'specialization': self.specialization,
+            'biography': self.biography,
+            'education': self.education,
+            'years_of_experience': self.years_of_experience,
+            'profile_photo_id': self.profile_photo_id,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+            'availabilities': [availability.to_dict() for availability in self.availabilities],
+            'patients': [patient.to_dict() for patient in self.patients]
+        }
 
 class Patient(Base):
     __tablename__ = 'patients'
@@ -49,6 +64,7 @@ class Patient(Base):
     updated_at = Column(DateTime)
     # Relationships
     doctors = relationship("DoctorPatient", back_populates="patient")
+    sessions = relationship("Session", backref="patient")
 
     def __init__(self, name, gender, dob, pre_existing_conditions, blood_type, weight, height, profile_photo_id, created_at=None, updated_at=None):
         self.name = name
@@ -64,6 +80,22 @@ class Patient(Base):
 
     def __repr__(self):
         return f"<Patient(id={self.id}, name='{self.name}')>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'gender': self.gender,
+            'dob': self.dob.isoformat() if self.dob else None,
+            'pre_existing_conditions': self.pre_existing_conditions,
+            'blood_type': self.blood_type,
+            'weight': self.weight,
+            'height': self.height,
+            'profile_photo_id': self.profile_photo_id,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+            'sessions': [session.to_dict() for session in self.sessions]
+        }
 
 class DoctorAvailability(Base):
     __tablename__ = 'doctor_availability'
@@ -87,6 +119,17 @@ class DoctorAvailability(Base):
 
     def __repr__(self):
         return f"<DoctorAvailability(id={self.id}, doctor_id={self.doctor_id}, day_of_week='{self.day_of_week}')>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'doctor_id': self.doctor_id,
+            'day_of_week': self.day_of_week,
+            'start_time': self.start_time.isoformat() if self.start_time else None,
+            'end_time': self.end_time.isoformat() if self.end_time else None,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+        }
 
 class DoctorPatient(Base):
     __tablename__ = 'doctor_patient'
@@ -109,6 +152,16 @@ class DoctorPatient(Base):
 
     def __repr__(self):
         return f"<DoctorPatient(id={self.id}, doctor_id={self.doctor_id}, patient_id={self.patient_id})>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'doctor_id': self.doctor_id,
+            'patient_id': self.patient_id,
+            'relationship_start_date': self.relationship_start_date.isoformat() if self.relationship_start_date else None,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+        }
 
 class Appointments(Base):
     __tablename__ = 'appointments'
@@ -138,6 +191,19 @@ class Appointments(Base):
 
     def __repr__(self):
         return f"<Appointments(id={self.id}, doctor_id={self.doctor_id}, patient_id={self.patient_id})>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'doctor_id': self.doctor_id,
+            'patient_id': self.patient_id,
+            'doctor_patient_id': self.doctor_patient_id,
+            'appointment_time': self.appointment_time.isoformat() if self.appointment_time else None,
+            'notes': self.notes,
+            'appointment_type': self.appointment_type,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+        }
 
 class AudioRecords(Base):
     __tablename__ = 'audio_records'
@@ -148,19 +214,33 @@ class AudioRecords(Base):
     recording_type = Column(String(255))
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
+    session_id = Column(Integer, ForeignKey('sessions.id'))
     # Relationship
     patient = relationship("Patient")
 
-    def __init__(self, patient_id, file_path, recording_date, recording_type, created_at=None, updated_at=None):
+    def __init__(self, patient_id, file_path, recording_date, recording_type, session_id, created_at=None, updated_at=None):
         self.patient_id = patient_id
         self.file_path = file_path
         self.recording_date = recording_date
         self.recording_type = recording_type
+        self.session_id = session_id
         self.created_at = created_at if created_at is not None else datetime.datetime.now(datetime.timezone.utc)
         self.updated_at = updated_at if updated_at is not None else datetime.datetime.now(datetime.timezone.utc)
 
     def __repr__(self):
-        return f"<AudioRecords(id={self.id}, patient_id={self.patient_id}, recording_type='{self.recording_type}')>"
+        return f"<AudioRecords(id={self.id}, patient_id={self.patient_id}, recording_type='{self.recording_type}', session_id={self.session_id})>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'patient_id': self.patient_id,
+            'file_path': self.file_path,
+            'recording_date': self.recording_date.isoformat(),
+            'recording_type': self.recording_type,
+            'session_id': self.session_id,
+            'created_at': self.created_at.isoformat(),
+            'updated_at': self.updated_at.isoformat(),
+        }
 
 class CalendarEvents(Base):
     __tablename__ = 'calendar_events'
@@ -193,6 +273,21 @@ class CalendarEvents(Base):
 
     def __repr__(self):
         return f"<CalendarEvents(id={self.id}, user_type='{self.user_type}', date='{self.date}')>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'user_type': self.user_type,
+            'date': self.date.isoformat() if self.date else None,
+            'is_available': self.is_available,
+            'reason_for_unavailability': self.reason_for_unavailability,
+            'event_type': self.event_type,
+            'doctor_id': self.doctor_id,
+            'patient_id': self.patient_id,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+        }
 
 class Holidays(Base):
     __tablename__ = 'holidays'
@@ -212,6 +307,16 @@ class Holidays(Base):
 
     def __repr__(self):
         return f"<Holidays(id={self.id}, name='{self.name}', date='{self.date}')>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'date': self.date.isoformat() if self.date else None,
+            'description': self.description,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+        }
 
 class DoctorAvailabilityExceptions(Base):
     __tablename__ = 'doctor_availability_exceptions'
@@ -235,6 +340,17 @@ class DoctorAvailabilityExceptions(Base):
 
     def __repr__(self):
         return f"<DoctorAvailabilityExceptions(id={self.id}, doctor_id={self.doctor_id}, date='{self.date}', is_available={self.is_available})>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'doctor_id': self.doctor_id,
+            'date': self.date.isoformat() if self.date else None,
+            'is_available': self.is_available,
+            'reason': self.reason,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+        }
 
 class AudioVisualizations(Base):
     __tablename__ = 'audio_visualizations'
@@ -254,6 +370,41 @@ class AudioVisualizations(Base):
 
     def __repr__(self):
         return f"<AudioVisualizations(id={self.id}, audio_id={self.audio_id})>"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'audio_id': self.audio_id,
+            'file_path': self.file_path,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+        }
+    
+class Session(Base):
+    __tablename__ = 'sessions'
+    id = Column(Integer, primary_key=True)
+    patient_id = Column(Integer, ForeignKey('patients.id'))
+    start_time = Column(DateTime, default=datetime.datetime.now)
+    end_time = Column(DateTime)
+    # Relationship with AudioRecords
+    audio_records = relationship("AudioRecords", backref="session")
+
+    def __init__(self, patient_id, start_time=None, end_time=None):
+        self.patient_id = patient_id
+        self.start_time = start_time if start_time is not None else datetime.datetime.now()
+        self.end_time = end_time
+
+    def __repr__(self):
+        return f"<Session(id={self.id}, patient_id={self.patient_id})>"
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'patient_id': self.patient_id,
+            'start_time': self.start_time.isoformat(),
+            'end_time': self.end_time.isoformat() if self.end_time else None,
+            'audio_records': [audio_record.to_dict() for audio_record in self.audio_records]
+        }
 
 # setup database connection
 engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
@@ -329,3 +480,42 @@ session.close()
 # return the date for the recordings and visualizations
 
 # do smaller functions for fetching i.e. break up visualization and recordings as different functions 
+
+# past listening session
+
+# get recording corresponding to one session
+
+# ideally mult sessions per day so can choose by datetime
+
+# access a specific sesson, when they have access to that, get recording for each part of the heart for each part of the session
+
+# have access to all recordings and visualzations
+
+# new listening session
+
+# click begin listening, create a session so maybe then have a session table?
+
+# create a recording for each measurement, these five recordings should all be a part of one session 
+
+# worry about redoing recordings later, not necessary for demo
+
+# click finish listening will finish session, take you to session summary, go through all recordings they just made, display all info for that specific session's instance
+
+# Sessions:
+
+# POST /api/sessions to create a new session.
+# GET /api/sessions/{sessionId} to get a specific session and its associated recordings/visualizations.
+# GET /api/sessions/user/{userId} to get all sessions for a specific user.
+# DELETE /api/sessions/{sessionId} to delete a session.
+
+# Recordings:
+
+# POST /api/recordings to create a new recording.
+# GET /api/recordings/{sessionId} to get all recordings for a session.
+# PUT /api/recordings/{recordingId} to update a recording.
+# DELETE /api/recordings/{recordingId} to delete a recording.
+
+# Visualizations:
+
+# POST /api/visualizations to create a visualization for a recording.
+# GET /api/visualizations/{sessionId} to get all visualizations for a session
