@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import BottomTabNavigator from '../../../components/BottomTabNavigator';
 import React, { useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
@@ -20,7 +20,7 @@ function ListeningSessions({ navigation }) {
   const [waveformPlot, setWaveformPlot] = useState(null);
 
   useEffect(() => {
-    
+
     async function getPermission() {
       await Audio.requestPermissionsAsync().then((permission) => {
         console.log('Permission Granted: ' + permission.granted);
@@ -33,7 +33,7 @@ function ListeningSessions({ navigation }) {
     getPermission()
 
     return () => {
-      if(recording) {
+      if (recording) {
         stopRecording();
       }
     };
@@ -41,7 +41,7 @@ function ListeningSessions({ navigation }) {
 
 
   async function startRecording() {
-    try{
+    try {
       if (audioPermission) {
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
@@ -101,7 +101,7 @@ function ListeningSessions({ navigation }) {
           const fileContent = await FileSystem.readAsStringAsync(audioUri, { encoding: FileSystem.EncodingType.Base64 });
           const uint8Array = base64.toByteArray(fileContent);
           const base64String = base64.fromByteArray(uint8Array);
-    
+
           const jsonPayload = {
             audio_data: base64String
           };
@@ -115,7 +115,7 @@ function ListeningSessions({ navigation }) {
 
           // Display waveform plot as an image in your React Native component
           setWaveformPlot(waveformPlotBase64);
-          
+
 
         } catch (error) {
           console.error('Error sending audio file to backend:', error);
@@ -127,26 +127,15 @@ function ListeningSessions({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+      <View style={styles.container}>
 
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('HeartRecordStep1');
-          console.log('You tapped the button!');
-        }}
-        style={styles.customButton}
-      >
-        <Text style={styles.buttonLabel}>Heart Record Step 1</Text>
-      </TouchableOpacity>
-
-
-      <Text style={{ fontSize: 20, fontFamily: 'HelveticaNeue-Thin', fontWeight: 'bold', color: 'black' }}>
+      <Text style={styles.HeartRateObservation}>
         Observe your Heart Rate:
       </Text>
 
       <TouchableOpacity style={styles.recordButton}
         onPress={RecordButtonPress}>
-        <FontAwesome name={recording ? 'stop-circle' : 'circle'} size={64} color="white" />
+        <FontAwesome name={recording ? 'stop-circle' : 'square'} size={64} color="red" />
       </TouchableOpacity>
       <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}
       </Text>
@@ -155,10 +144,22 @@ function ListeningSessions({ navigation }) {
         <Image source={{ uri: `data:image/png;base64,${waveformPlot}` }} style={{ width: 300, height: 150 }} />
       )}
 
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('HeartRecordStep1');
+          console.log('You tapped the button!');
+        }}
+        style={styles.customButton}
+      >
+        <Text style={styles.buttonText}>
+          Heart Record Step 1
+        </Text>
+      </TouchableOpacity>
+
       <BottomTabNavigator></BottomTabNavigator>
 
-      
-    </View>
+
+      </View>
   );
 }
 
@@ -166,9 +167,10 @@ function ListeningSessions({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'hsla(200, 100%, 77%, 1)', // Change the background color as needed
+    size: 'parent-bottom'
   },
   title: {
     justifyContent: 'center',
@@ -178,15 +180,16 @@ const styles = StyleSheet.create({
   customButton: {
     backgroundColor: 'white', // Change button background color
     padding: 15,
-    borderRadius: 10, // Adjust border radius for rounded corners
-    marginTop: 20,
+    borderRadius: 50, // Adjust border radius for rounded corners
+    marginTop: 400,
     width: 200,
     height: 50,
+    alignItems: 'center',
   },
   buttonText: {
     color: 'black', // Change text color
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   recordButton: {
@@ -195,7 +198,13 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 64,
-    backgroundColor: 'red',
+    backgroundColor: 'blue',
+  },
+  HeartRateObservation: {
+    fontSize: 20,
+    fontFamily: 'HelveticaNeue-Thin',
+    fontWeight: 'bold',
+    color: 'black',
   },
 });
 
