@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 import sqlalchemy
 import datetime
-from Backend.instances import config
+from ..instances import config
 Base = sqlalchemy.orm.declarative_base()
 
 class Doctor(Base):

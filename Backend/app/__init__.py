@@ -20,7 +20,7 @@ def create_app():
   with app.app_context():
     # Import parts of our application
     from .models import models
-    from .routes import example
+    from .api.routes import example
     
     # Register Blueprints
     # app.register_blueprint(example.bp)  # Example of registering a blueprint

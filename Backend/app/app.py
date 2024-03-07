@@ -1,5 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from .instances  import config
+
 
 app = Flask(__name__)
 # init my sql connection
