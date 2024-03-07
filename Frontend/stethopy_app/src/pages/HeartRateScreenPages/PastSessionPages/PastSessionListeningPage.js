@@ -8,7 +8,9 @@ const PastSessionListeningPage = ({ navigation }) => {
       <Text style={{ fontSize: 30, fontFamily: 'HelveticaNeue-Thin', fontWeight: 'bold', color: 'black' }}>
         PastSessionListeningPage
       </Text>
-      
+
+      <img src="Frontend/heartcageImage.heic" alt="React Image" />
+
       <BottomTabNavigator></BottomTabNavigator>
     </View>
   );
