@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import BottomTabNavigator from '../../../components/BottomTabNavigator';
 import RecordPageImage from '../../../components/images/RecordPage1Image.jpg'
-import Circle from '../../../components/images/Red_circle.svg.png'
+import Circle from '../../../components/images/Red_circle.svg.png';
 //import { fetchData } from './ListeningSessions/RecordButtonPress';
 //import { FontAwesome } from '@expo/vector-icons';
 //import ListeningSessions from './ListeningSessions';
@@ -11,7 +11,7 @@ const HeartRecordStep1 = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-          1st Measurement: Right heart
+          Measurement 1: Right heart
         </Text>
         <Image 
           source={RecordPageImage}
@@ -32,11 +32,12 @@ const HeartRecordStep1 = ({ navigation }) => {
           }}
           style={styles.customButton}
         >
-          <Text style={styles.buttonText}>Heart Record Step 2</Text>
+        <Text style={styles.buttonText}>Next Measurement</Text>
         </TouchableOpacity>
         
         
-        <BottomTabNavigator></BottomTabNavigator>
+        
+        {/* <BottomTabNavigator></BottomTabNavigator> */}
       </View>
   );
 };
@@ -48,16 +49,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'hsla(215, 100%, 60%, 1)', // Change the background color as needed
+    backgroundColor: 'white', // Change the background color as needed
   },
   title: {
     fontSize: 24, // Change the font size as needed
     marginBottom: 20, // Adjust spacing between title and button
     fontFamily: 'HelveticaNeue-Thin',
     fontWeight: 'bold',
-    color: 'white',
+    color: '#C42021',
     alignSelf: 'center',
-    marginTop: 100,
+    marginTop: 80,
     marginBottom: -100,
   },
   description: {
@@ -67,17 +68,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 125,
     marginBottom: -150,
-    backgroundColor: 'red',
+    color: '#C42021',
+    // backgroundColor: 'red',
     justifyContent: 'center',
   },
   customButton: {
-    backgroundColor: 'white', // Change button background color
-    padding: 15,
-    borderRadius: 50, // Adjust border radius for rounded corners
-    marginTop: 250,
-    marginBottom: 250,
-    width: 200,
-    height: 50,
+    backgroundColor: '#009FB7',
+    borderRadius: 50,
+    position: 'absolute',
+    bottom: 50,
+    right: 20,
+    padding: 10,
+    width: 150,
   },
   recordButton: {
     backgroundColor: 'red',
@@ -92,21 +94,22 @@ const styles = StyleSheet.create({
     marginTop: 20, // Adjust the margin as needed
   },
   buttonText: {
-    color: 'black', // Change text color
+    color: 'black',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   image: {
     width: 500,
-    height: 200,
-    marginTop: 175,
+    height: 230,
+    marginTop: 160,
     marginBottom: -150,
     resizeMode: 'contain', // Adjust the resizeMode as per your requirement
   },
   circle: {
     position: 'relative',
-    left: -22,
+    left: -25,
+    bottom: 20,
     padding: 15, //change the diameter of the red circle
     width: 30,
     height: 30,
