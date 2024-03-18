@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import BottomTabNavigator from '../../../components/BottomTabNavigator';
+import RecordingButton from '../../../components/RecordingButton';
 import RecordPageImage from '../../../components/images/RecordPage1Image.jpg';
 import Circle from '../../../components/images/Red_circle.svg.png';
 
@@ -42,6 +42,7 @@ const HeartRecordStep3 = ({ navigation }) => {
       </TouchableOpacity>
       
       {/* <BottomTabNavigator></BottomTabNavigator> */}
+      <RecordingButton></RecordingButton>
     </View>
   );
 };
