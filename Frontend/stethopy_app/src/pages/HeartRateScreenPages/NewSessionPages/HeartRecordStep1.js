@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import BottomTabNavigator from '../../../components/BottomTabNavigator';
+// import BottomTabNavigator from '../../../components/BottomTabNavigator';
+import RecordingButton from '../../../components/RecordingButton'
 import RecordPageImage from '../../../components/images/RecordPage1Image.jpg'
 import Circle from '../../../components/images/Red_circle.svg.png';
 //import { fetchData } from './ListeningSessions/RecordButtonPress';
@@ -37,8 +38,9 @@ const HeartRecordStep1 = ({ navigation }) => {
         
         
         
-        {/* <BottomTabNavigator></BottomTabNavigator> */}
+        <RecordingButton></RecordingButton>
       </View>
+
   );
 };
 
@@ -81,14 +83,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 150,
   },
-  recordButton: {
-    backgroundColor: 'red',
-    borderRadius: 50,
-    marginTop: 160,
-    marginBottom: -175,
-    width: 200,
-    height: 50,
-  },
+ 
   button: {
     width: '90%', // Adjust the width as needed
     marginTop: 20, // Adjust the margin as needed
@@ -109,7 +104,7 @@ const styles = StyleSheet.create({
   circle: {
     position: 'relative',
     left: -25,
-    bottom: 20,
+    bottom: 19,
     padding: 15, //change the diameter of the red circle
     width: 30,
     height: 30,

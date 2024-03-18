@@ -1,5 +1,4 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import BottomTabNavigator from '../../../components/BottomTabNavigator';
 import React, { useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
@@ -130,48 +129,25 @@ function RecordingButton({ navigation }) {
       <View style={styles.container}>
 
       <Text style={styles.HeartRateObservation}>
-        Observe your Heart Rate:
+        Tap to Record
       </Text>
 
       <TouchableOpacity style={styles.recordButton}
         onPress={RecordButtonPress}>
-        <FontAwesome name={recording ? 'stop-circle' : 'square'} size={64} color="red" />
+        <FontAwesome name={recording ? 'stop-circle' : 'circle'} size={36} color="red" />
       </TouchableOpacity>
-      <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}
-      </Text>
+      {/* <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}
+      </Text> */}
 
       {waveformPlot && (
         <Image source={{ uri: `data:image/png;base64,${waveformPlot}` }} style={{ width: 300, height: 150 }} />
       )}
-
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('HeartRecordStep1');
-          console.log('You tapped the button!');
-        }}
-        style={styles.customButton}
-      >
-        <Text style={styles.buttonText}>
-          Heart Record Step 1
-        </Text>
-      </TouchableOpacity>
-
-      <BottomTabNavigator></BottomTabNavigator>
-
-
       </View>
   );
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'hsla(200, 100%, 77%, 1)', // Change the background color as needed
-    size: 'parent-bottom'
-  },
   title: {
     justifyContent: 'center',
     fontSize: 24, // Change the font size as needed
@@ -193,18 +169,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   recordButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 100,
-    height: 100,
-    borderRadius: 64,
-    backgroundColor: 'blue',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: 50, // Smaller width
+  height: 50, // Smaller height
+  borderRadius: 35, // Adjusted for the smaller size to keep it circular
+  backgroundColor: 'white',
+  marginTop: 15, // Example to move the button down from the top of its container
+  marginLeft: 40,
+  borderWidth: 1, // Width of the border
+  borderColor: 'black',
   },
   HeartRateObservation: {
     fontSize: 20,
+    marginTop: 160,
+    marginLeft: 5,
     fontFamily: 'HelveticaNeue-Thin',
-    fontWeight: 'bold',
-    color: 'black',
+    color: '#C42021',
   },
 });
 
