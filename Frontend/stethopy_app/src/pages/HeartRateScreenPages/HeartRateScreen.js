@@ -6,7 +6,7 @@ import * as FileSystem from 'expo-file-system';
 import base64 from 'base64-js';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
-
+import PastListImage from '../../components/images/PastListening.png';
 /**
  * This page serves as the landing page to either start a new heart recording or view past heart recordings
  * 
@@ -17,29 +17,34 @@ function HeartRateScreen({ navigation }) {
 
 
   return (
-
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('ListeningSessions');
+          navigation.navigate('NewListeningSessionPage');
           console.log('You tapped the button!');
         }}
         style={styles.customButton}
       >
-        <Text style={styles.buttonLabel}>New Listening Session</Text>
+      <Text style={styles.buttonText}>New Listening Session</Text>
       </TouchableOpacity>
+
+      <Image 
+        source={PastListImage}
+        style={styles.image}
+      />
 
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('PastSessionListeningPage');
           console.log('You tapped the button!');
         }}
-        style={styles.customButton}
+        style={styles.customButton2}
       >
-        <Text style={styles.buttonLabel}>Past Listening Sessions</Text>
+      <Text style={styles.buttonText}>Past Listening Sessions</Text>
       </TouchableOpacity>
-  </View>
 
+      <BottomTabNavigator></BottomTabNavigator>
+    </View>
   );
 }
 
@@ -49,7 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'hsla(200, 100%, 77%, 1)', // Change the background color as needed
+    backgroundColor: 'white', // Change the background color as needed
   },
   title: {
     justifyContent: 'center',
@@ -57,12 +62,21 @@ const styles = StyleSheet.create({
     marginBottom: 20, // Adjust spacing between title and button
   },
   customButton: {
-    backgroundColor: 'white', // Change button background color
-    padding: 15,
-    borderRadius: 10, // Adjust border radius for rounded corners
-    marginTop: 20,
-    width: 200,
-    height: 50,
+    backgroundColor: '#009FB7',
+    borderRadius: 50,
+    position: 'absolute',
+    padding: 10,
+    width: 300,
+    height: 45,
+    top: 20,
+  },
+  customButton2: {
+    backgroundColor: '#009FB7',
+    borderRadius: 50,
+    position: 'absolute',
+    padding: 10,
+    width: 300,
+    top: 150,
   },
   buttonText: {
     color: 'black', // Change text color
@@ -77,6 +91,12 @@ const styles = StyleSheet.create({
     height: 128,
     borderRadius: 64,
     backgroundColor: 'red',
+  },
+  image: {
+    width: 300,
+    height: 100,
+    bottom: 275,
+    resizeMode: 'contain', // Adjust the resizeMode as per your requirement
   },
 });
 

@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from .instances  import config
+from instances  import config
 
 
 app = Flask(__name__)
@@ -11,14 +11,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
 db = SQLAlchemy(app)
 
 # import models
-from app.models.models import *
+from models import *
 
 # create db tables 
 with app.app_context():
     db.create_all()
 
 # import api blueprint
-from app.api.routes import api_blueprint
+from api.routes import api_blueprint
 app.register_blueprint(api_blueprint, url_prefix='/api')
 
 if __name__ == '__main__':

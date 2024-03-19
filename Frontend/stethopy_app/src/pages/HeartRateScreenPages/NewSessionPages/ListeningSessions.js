@@ -14,136 +14,22 @@ import axios from 'axios';
 
 function ListeningSessions({ navigation }) {
 
-  const [recording, setRecording] = useState(null);
-  const [recordingStatus, setRecordingStatus] = useState('idle');
-  const [audioPermission, setAudioPermission] = useState(null);
-  const [waveformPlot, setWaveformPlot] = useState(null);
-
-  useEffect(() => {
-
-    async function getPermission() {
-      await Audio.requestPermissionsAsync().then((permission) => {
-        console.log('Permission Granted: ' + permission.granted);
-        setAudioPermission(permission.granted)
-      }).catch(error => {
-        console.log(error);
-      });
-    }
-
-    getPermission()
-
-    return () => {
-      if (recording) {
-        stopRecording();
-      }
-    };
-  }, []);
-
-
-  async function startRecording() {
-    try {
-      if (audioPermission) {
-        await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
-          playsInSilentModeIOS: true
-        })
-      }
-
-      const newRecording = new Audio.Recording();
-      console.log('Starting Recording')
-      await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-      await newRecording.startAsync();
-      setRecording(newRecording);
-      setRecordingStatus('recording');
-
-    } catch (error) {
-      console.error('Failed to start recording', error);
-    }
-  }
-
-
-  async function stopRecording() {
-    try {
-      if (recordingStatus === 'recording') {
-        console.log('Stopping Recording')
-        await recording.stopAndUnloadAsync();
-        const recordingUri = recording.getURI();
-        const fileName = `recording-${Date.now()}.caf`;
-
-        await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'recordings/', { intermediates: true });
-        await FileSystem.moveAsync({
-          from: recordingUri,
-          to: FileSystem.documentDirectory + 'recordings/' + `${fileName}`
-
-        });
-
-        // const playbackObject = new Audio.Sound();
-        // await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}`});
-        // await playbackObject.playAsync();
-
-        setRecording(null);
-        setRecordingStatus('stopped');
-
-        return FileSystem.documentDirectory + 'recordings/' + `${fileName}`;
-      }
-    } catch (error) {
-      console.error('Failed to stop recording', error);
-    }
-  }
-
-  async function RecordButtonPress() {
-    if (recording) {
-      const audioUri = await stopRecording(recording);
-      if (audioUri) {
-        console.log('Saved audio file to', audioUri);
-
-        try {
-          const fileContent = await FileSystem.readAsStringAsync(audioUri, { encoding: FileSystem.EncodingType.Base64 });
-          const uint8Array = base64.toByteArray(fileContent);
-          const base64String = base64.fromByteArray(uint8Array);
-
-          const jsonPayload = {
-            audio_data: base64String
-          };
-          // Send the audio file to the Flask backend
-          const response = await axios.post('http://192.168.86.249:50432/process-audio', jsonPayload);
-          console.log(response);
-
-          console.log('Successfully sent audio file to backend and retrieved output.wav from post request');
-
-          const waveformPlotBase64 = response.data.waveform_plot;
-
-          // Display waveform plot as an image in your React Native component
-          setWaveformPlot(waveformPlotBase64);
-
-
-        } catch (error) {
-          console.error('Error sending audio file to backend:', error);
-        }
-      }
-    } else {
-      await startRecording();
-    }
-  }
 
   return (
       <View style={styles.container}>
+      
+      <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('HeartRateScreen');
+        console.log('You tapped the button!');
+      }}
+      style={styles.customButton2}
+    >
+    <Text style={styles.buttonText}>All Recordings</Text>
+    </TouchableOpacity>
 
-      <Text style={styles.HeartRateObservation}>
-        Observe your Heart Rate:
-      </Text>
-
-      <TouchableOpacity style={styles.recordButton}
-        onPress={RecordButtonPress}>
-        <FontAwesome name={recording ? 'stop-circle' : 'square'} size={64} color="red" />
-      </TouchableOpacity>
-      <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}
-      </Text>
-
-      {waveformPlot && (
-        <Image source={{ uri: `data:image/png;base64,${waveformPlot}` }} style={{ width: 300, height: 150 }} />
-      )}
-
+    <Text style={styles.title}>How to use Stethopy</Text>
+    
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('HeartRecordStep1');
@@ -151,8 +37,8 @@ function ListeningSessions({ navigation }) {
         }}
         style={styles.customButton}
       >
-        <Text style={styles.buttonText}>
-          Heart Record Step 1
+        <Text style={styles.title2}>
+          Begin Listening
         </Text>
       </TouchableOpacity>
 
@@ -169,44 +55,91 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'hsla(200, 100%, 77%, 1)', // Change the background color as needed
-    size: 'parent-bottom'
+    backgroundColor: 'white', // Change the background color as needed
   },
   title: {
-    justifyContent: 'center',
     fontSize: 24, // Change the font size as needed
     marginBottom: 20, // Adjust spacing between title and button
-  },
-  customButton: {
-    backgroundColor: 'white', // Change button background color
-    padding: 15,
-    borderRadius: 50, // Adjust border radius for rounded corners
-    marginTop: 400,
-    width: 200,
-    height: 50,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'black', // Change text color
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  recordButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 100,
-    height: 100,
-    borderRadius: 64,
-    backgroundColor: 'blue',
-  },
-  HeartRateObservation: {
-    fontSize: 20,
     fontFamily: 'HelveticaNeue-Thin',
     fontWeight: 'bold',
-    color: 'black',
+    color: '#C42021',
+    alignSelf: 'center',
+    marginTop: 80,
+    marginBottom: -100,
   },
+  title2: {
+    fontSize: 24, // Change the font size as needed
+    marginBottom: 20, // Adjust spacing between title and button
+    fontFamily: 'HelveticaNeue-Thin',
+    fontWeight: 'bold',
+    color: '#C42021',
+    alignSelf: 'center',
+    marginTop: 80,
+    marginBottom: -100,
+  },
+  description: {
+    fontSize: 14,
+    fontFamily: 'HelveticaNeue-Thin',
+    marginBottom: 15,
+    fontWeight: 'bold',
+    marginTop: 125,
+    marginBottom: -150,
+    color: '#C42021',
+    // backgroundColor: 'red',
+    justifyContent: 'center',
+  },
+  customButton: {
+    backgroundColor: 'white',
+    borderRadius: 50,
+    position: 'absolute',
+    bottom: 300,
+    padding: 10,
+    width: 200,
+    alignItems: "center"
+  },
+  customButton2: {
+    backgroundColor: '#009FB7',
+    borderRadius: 50,
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    padding: 10,
+    width: 150,
+  },
+  recordButton: {
+    backgroundColor: 'red',
+    borderRadius: 50,
+    marginTop: 160,
+    marginBottom: -175,
+    width: 200,
+    height: 50,
+  },
+  button: {
+    width: '90%', // Adjust the width as needed
+    marginTop: 20, // Adjust the margin as needed
+  },
+  buttonText: {
+    color: 'black',
+    textAlign: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  image: {
+    width: 500,
+    height: 300,
+    marginTop: 145,
+    marginBottom: -150,
+    resizeMode: 'contain', // Adjust the resizeMode as per your requirement
+  },
+  circle: {
+    position: 'relative',
+    left: 19,
+    bottom: -37,
+    padding: 15, //change the diameter of the red circle
+    width: 30,
+    height: 30,
+    marginTop: 7,
+  }
 });
-
 
 export default ListeningSessions;
