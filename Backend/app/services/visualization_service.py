@@ -1,4 +1,6 @@
-from app.models.models import db, AudioVisualizations, AudioRecords
+from models.audio_visualizations import AudioVisualizations
+from models.audio_records import AudioRecords
+from app import db
 
 def create_visualization(data):
     new_visualization = AudioVisualizations(
@@ -12,4 +14,3 @@ def create_visualization(data):
 def get_visualizations_by_session(session_id):
     visualizations = AudioVisualizations.query.join(AudioRecords).filter(AudioRecords.session_id == session_id).all()
     return visualizations
-

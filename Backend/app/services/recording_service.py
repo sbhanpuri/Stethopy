@@ -1,4 +1,5 @@
-from app.models.models import db, AudioRecords
+from models.audio_records import AudioRecords
+from app import db
 
 def create_audio_record(data):
     new_audio_record = AudioRecords(
