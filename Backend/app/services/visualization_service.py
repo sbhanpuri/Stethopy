@@ -1,4 +1,6 @@
-from app.models.models import db, AudioVisualizations, AudioRecords
+from models.audio_visualizations import AudioVisualizations
+from models.audio_records import AudioRecords
+from app import db
 
 def create_visualization(data):
     new_visualization = AudioVisualizations(

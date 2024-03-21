@@ -12,27 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/process-audio', methods=['POST'])
-def process_audio():
-    data = request.json.get('audio_data')
 
-    # Process audio data (you need to implement this part)
-    cleaned_audio = clean_audio(data)
-
-    #with app.app_context():
-    # Save the processed audio as a WAV file
-    output_filename = 'output.wav'
-    create_wave_file(cleaned_audio, output_filename)
-
-    #now output.wav contains audio
-    waveform_plot = generate_waveform_plot(output_filename)
-
-    plot_buffer = BytesIO()
-    waveform_plot.savefig(plot_buffer, format='png')
-    plot_buffer.seek(0)
-    plot_base64 = base64.b64encode(plot_buffer.read()).decode('utf-8')
-
-    return jsonify({'data': output_filename, 'waveform_plot': plot_base64})
 
 
 def generate_waveform_plot(output_filename):
@@ -83,7 +63,7 @@ def create_wave_file(data, filename):
         
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=50432)
+    app.run(host='0.0.0.0', port=5002)
 
 
 #process_audio()

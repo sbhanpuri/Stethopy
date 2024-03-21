@@ -1,4 +1,5 @@
-from app.models.models import db, Session
+from models.session import Session
+from app import db
 
 def create_session(data):
     new_session = Session(patient_id=data['patient_id'])
