@@ -1,5 +1,5 @@
-from imports import *
-from models import Base
+from .imports import *
+from .models import Base
 
 class AudioVisualizations(Base):
     __tablename__ = 'audio_visualizations'
