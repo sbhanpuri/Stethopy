@@ -1,5 +1,5 @@
-from imports import *
-from models import Base
+from .imports import *
+from .models import Base
 
 class AudioRecords(Base):
     __tablename__ = 'audio_records'

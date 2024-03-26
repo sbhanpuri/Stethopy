@@ -1,5 +1,5 @@
-from imports import *
-from models import Base
+from .imports import *
+from .models import Base
 class Session(Base):
     __tablename__ = 'sessions'
     id = Column(Integer, primary_key=True)

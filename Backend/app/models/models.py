@@ -1,4 +1,4 @@
-from imports import *
+from .imports import *
 
 Base = sqlalchemy.orm.declarative_base()
 
