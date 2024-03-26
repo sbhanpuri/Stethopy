@@ -1,13 +1,36 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { useState } from 'react';
 import BottomTabNavigator from '../../components/BottomTabNavigator';
 import BannerImage from '../../components/images/HeartAndBanner.png';
 
+function getDate() {
+  const today = new Date();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  const date = today.getDate();
+  return `${month}/${date}/${year}`;
+}
+
+function getTime() {
+  const date = new Date();
+  const showTime = date.getHours() 
+      + ':' + date.getMinutes() 
+      + ":" + date.getSeconds();
+  return showTime;
+}
+
 const SessionSummary = ({ navigation }) => {
+  const [currentDate, setCurrentDate] = useState(getDate());
+  const [currentTime, setCurrentTime] = useState(getTime());
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        INSERT DATE
+        Session Date: {currentDate}
+      </Text>
+      <Text style={styles.subtitle}>
+        {'\n'}
+        Session Time: {currentTime}
       </Text>
       <Image 
         source={BannerImage}
@@ -24,8 +47,6 @@ const SessionSummary = ({ navigation }) => {
     <Text style={styles.buttonText}>All Recordings</Text>
     </TouchableOpacity>
       
-
-      
       <BottomTabNavigator></BottomTabNavigator>
     </View>
   );
@@ -40,6 +61,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24, // Change the font size as needed
+    marginBottom: 20, // Adjust spacing between title and button
+    fontFamily: 'HelveticaNeue-Thin',
+    fontWeight: 'bold',
+    color: '#C42021',
+    alignSelf: 'center',
+    marginTop: 80,
+    marginBottom: -100,
+  },
+  subtitle: {
+    fontSize: 20, // Change the font size as needed
     marginBottom: 20, // Adjust spacing between title and button
     fontFamily: 'HelveticaNeue-Thin',
     fontWeight: 'bold',
