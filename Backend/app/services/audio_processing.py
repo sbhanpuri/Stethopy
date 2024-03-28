@@ -5,14 +5,34 @@ from flask import Flask, jsonify, request
 import os
 from flask_cors import CORS
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')  # Use the Agg backend
 import matplotlib.pyplot as plt
 from io import BytesIO
 #import noisereduce
-app = Flask(__name__)
-CORS(app)
 
 
+def process_audio():
+    data = request.json.get('audio_data')
 
+
+    # Process audio data (you need to implement this part)
+    cleaned_audio = clean_audio(data)
+
+    #with app.app_context():
+    # Save the processed audio as a WAV file
+    output_filename = 'output.wav'
+    create_wave_file(cleaned_audio, output_filename)
+
+    #now output.wav contains audio
+    waveform_plot = generate_waveform_plot(output_filename)
+
+    plot_buffer = BytesIO()
+    waveform_plot.savefig(plot_buffer, format='png')
+    plot_buffer.seek(0)
+    plot_base64 = base64.b64encode(plot_buffer.read()).decode('utf-8')
+
+    return jsonify({'data': output_filename, 'waveform_plot': plot_base64})
 
 
 def generate_waveform_plot(output_filename):
@@ -61,9 +81,6 @@ def create_wave_file(data, filename):
     #return filename
 
         
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002)
 
 
 #process_audio()
