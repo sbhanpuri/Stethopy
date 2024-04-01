@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     marginBottom: 20, // Adjust spacing between title and button
   },
   customButton: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     padding: 10,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     top: 20,
   },
   customButton2: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     padding: 10,

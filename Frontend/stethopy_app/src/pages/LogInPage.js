@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Alert, Image, TouchableOpacity, Text } from 'react-native';
+// import StethopyLogo from '../components/images/stethopyLogo.png';
 
-const SignInPage = () => {
+const LogInPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const StethopyLogo = require('../components/images/stethopyLogo.png');
 
   const handleSignIn = () => {
     // Placeholder for authentication logic
@@ -27,6 +29,10 @@ const SignInPage = () => {
 
   return (
     <View style={styles.container}>
+      <Image
+      source={StethopyLogo}
+      style={styles.image}
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -43,7 +49,11 @@ const SignInPage = () => {
         secureTextEntry
         autoCapitalize="none"
       />
-      <Button title="Sign In" onPress={handleSignIn} />
+      <View style={styles.button}>
+      <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('Log In')}>          
+          <Text style={styles.text}> Log In</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -53,14 +63,37 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: 'white',
   },
   input: {
-    height: 40,
+    height: 50,
     marginBottom: 12,
     borderWidth: 1,
     padding: 10,
     borderRadius: 5,
   },
+  image: {
+    width: 350,
+    height: 100,
+    resizeMode: 'contain', // Adjust the resizeMode as per your requirement
+    top: -75,
+  },
+  button: {
+    position: 'absolute',
+    top: 500,
+    right: 145,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: '#9fc5e8',
+    width: 100,
+    height: 53,
+    alignContent: 'center',
+  },
+  text: {
+    fontSize: 23,
+    color: 'black',
+    fontWeight: '700',
+  }
 });
 
-export default SignInPage;
+export default LogInPage;

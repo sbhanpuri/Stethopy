@@ -5,8 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Import your screens
 import HomeScreen from '../pages/Home';
 import Profile from '../pages/Profile';
-import SignInPage from '../pages/SignInPage';
-//import SignUpPage from '../pages/SignUpPage';
+import LogInPage from '../pages/LogInPage';
+import SignUpPage from '../pages/SignUpPage';
 
 
 //Heart Rate Screen pages
@@ -44,8 +44,8 @@ const RootStack = () => {
         <Stack.Screen name="HeartRecordStep4" component={HeartRecordStep4} />
         <Stack.Screen name="NewListeningSessionPage" component={NewListeningSessionLanding} />
         <Stack.Screen name="PastSessionListeningPage" component={PastSessionListeningPage} />
-        <Stack.Screen name="Sign In" component={SignInPage} />
-        {/* <Stack.Screen name="Sign Up" component={SignUpPage} /> */}
+        <Stack.Screen name="Log In" component={LogInPage} />
+        <Stack.Screen name="Sign Up" component={SignUpPage} />
       </Stack.Navigator>
 
     </NavigationContainer>

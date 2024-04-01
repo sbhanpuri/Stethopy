@@ -2,17 +2,22 @@ import React from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import BottomTabNavigator from '../components/BottomTabNavigator';
 import OpeningHeart from '../components/images/OpeningHeartBanner2.png'
+import LogInButton from '../components/LogInButton';
+import SignUpButton from '../components/SignUpButton';
+import stethopyLogo from '../components/images/stethopyLogo.png';
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-    <Text style={styles.title}>
+    {/* <Text style={styles.title}>
           Stethopy
-        </Text>
+        </Text> */}
       <Image 
-          source={OpeningHeart}
+          source={stethopyLogo}
           style={styles.image}
         />
+      <LogInButton></LogInButton>
+      <SignUpButton></SignUpButton>
       <BottomTabNavigator></BottomTabNavigator>
     </View>
   );
@@ -40,10 +45,11 @@ const styles = StyleSheet.create({
     marginTop: 20, // Adjust the margin as needed
   },
   image: {
-    width: 500,
+    width: 350,
     height: 230,
     resizeMode: 'contain', // Adjust the resizeMode as per your requirement
-    top: -200,
+    top: -135,
+    
   },
 });
 
