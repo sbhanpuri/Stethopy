@@ -9,40 +9,61 @@ import matplotlib
 matplotlib.use('Agg')  # Use the Agg backend
 import matplotlib.pyplot as plt
 from io import BytesIO
+from pathlib import Path
+
 #import noisereduce
 
 
-def process_audio():
-    data = request.json.get('audio_data')
+def process_audio(data):
+    audio_data = data['audio_data']
+    patient_id = data['patient_id']
+    session_id = data['session_id']
+    recording_type = data['recording_type']
+    
+    # Construct the path to the 'media/audio' directory
+    media_dir = Path(__file__).parents[2] / 'media' / 'audio'
+    os.makedirs(media_dir, exist_ok=True)  # Ensure the directory exists
+
+    # Create the filename
+    filename = f"{patient_id}_{session_id}_{recording_type}.wav"
+    
+    # Full path for the output file
+    output_file_path = media_dir / filename
 
 
     # Process audio data (you need to implement this part)
-    cleaned_audio = clean_audio(data)
+    cleaned_audio = clean_audio(audio_data)
 
     #with app.app_context():
     # Save the processed audio as a WAV file
-    output_filename = 'output.wav'
-    create_wave_file(cleaned_audio, output_filename)
+    create_wave_file(cleaned_audio, output_file_path)
 
     #now output.wav contains audio
-    waveform_plot = generate_waveform_plot(output_filename)
+    waveform_plot = generate_waveform_plot(output_file_path)
 
     plot_buffer = BytesIO()
     waveform_plot.savefig(plot_buffer, format='png')
     plot_buffer.seek(0)
     plot_base64 = base64.b64encode(plot_buffer.read()).decode('utf-8')
 
-    return jsonify({'data': output_filename, 'waveform_plot': plot_base64})
+    return str(output_file_path)
+    # return jsonify({'data': output_filename, 'waveform_plot': plot_base64})
 
 
 def generate_waveform_plot(output_filename):
-    file = wave.open(output_filename, 'rb')
+    output_filename = str(output_filename)
+    # file = wave.open(output_filename, 'rb')
 
-    sample_freq = file.getframerate()
-    frames = file.getnframes()
-    signal_wave = file.readframes(-1)
+    # sample_freq = file.getframerate()
+    # frames = file.getnframes()
+    # signal_wave = file.readframes(-1)
 
-    file.close
+    # file.close
+    with wave.open(output_filename, 'rb') as file:
+        sample_freq = file.getframerate()
+        frames = file.getnframes()
+        signal_wave = file.readframes(frames)
+
     time = frames / sample_freq
 
     audio_array = np.frombuffer(signal_wave, dtype=np.int16)
@@ -72,6 +93,9 @@ def create_wave_file(data, filename):
     CHANNELS = 1
     RATE = 44100
     audio_bytes = base64.b64decode(data)
+
+    filename = str(filename)
+
     with wave.open(filename, "wb") as wf:
         wf.setnchannels(CHANNELS)
         wf.setsampwidth(pyaudio.PyAudio().get_sample_size(FORMAT))

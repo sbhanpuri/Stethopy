@@ -1,8 +1,9 @@
 from models.session import Session
 from app import db
 
-def create_session(data):
-    new_session = Session(patient_id=data['patient_id'])
+def create_session(patient_id):
+    new_session = Session(patient_id=patient_id)
+    print(patient_id) 
     db.session.add(new_session)
     db.session.commit()
     return new_session

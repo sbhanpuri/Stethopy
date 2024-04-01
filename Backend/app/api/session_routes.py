@@ -10,8 +10,9 @@ session_blueprint = Blueprint('sessions', __name__)
 # POST /api/sessions to create a new session
 @session_blueprint.route('/create_session', methods=['POST'])
 def api_create_session():
-    data = request.get_json('patient_id')
-    new_session = create_session(data)
+    json_data = request.get_json()
+    patient_id = json_data.get('patient_id') 
+    new_session = create_session(patient_id)
     return jsonify(new_session.to_dict()), 201
 
 # GET /api/sessions/{sessionId} to get a specific session and its associated recordings/visualizations
