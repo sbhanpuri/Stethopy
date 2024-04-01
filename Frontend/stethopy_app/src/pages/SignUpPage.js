@@ -1,129 +1,89 @@
-// import React, { useState } from 'react';
-// import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
-// import { Picker } from '@react-native-picker/picker';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
-const SignUp = () => {
-//     const [name, setName] = useState('');
-//     const [dob, setDob] = useState('2000-01-01');
-//     const [phoneNumber, setPhoneNumber] = useState('');
-//     const [email, setEmail] = useState('');
-//     const [address, setAddress] = useState('');
-//     const [sex, setSex] = useState('');
-//     const [weight, setWeight] = useState('');
-//     const [height, setHeight] = useState('');
-//     const [bloodType, setBloodType] = useState('');
-//     const [preExistingConditions, setPreExistingConditions] = useState('');
+const SignUpPage = () => {
+  const [userType, setUserType] = useState('patient'); // Default to patient
+  const [profileImage, setProfileImage] = useState(null);
 
-//     return (
-//     <ScrollView contentContainerStyle={styles.container}>
-//         <TextInput
-//         style={styles.input}
-//         placeholder="Name"
-//         onChangeText={setName}
-//         value={name}
-//         />
-//         <View style={styles.pickerContainer}>
-//         <Picker
-//             selectedValue={dob}
-//             style={styles.picker}
-//             onValueChange={(itemValue) => setDob(itemValue)}>
-//             {/* Generate Date of Birth options or use a date picker library */}
-//             <Picker.Item label="2000-01-01" value="2000-01-01" />
-//             {/* Add more options as needed */}
-//         </Picker>
-//         </View>
-//         <TextInput
-//         style={styles.input}
-//         placeholder="Phone Number"
-//         keyboardType="phone-pad"
-//         onChangeText={setPhoneNumber}
-//         value={phoneNumber}
-//         />
-//         <TextInput
-//         style={styles.input}
-//         placeholder="Email"
-//         keyboardType="email-address"
-//         onChangeText={setEmail}
-//         value={email}
-//         />
-//         <TextInput
-//         style={styles.input}
-//         placeholder="Address"
-//         onChangeText={setAddress}
-//         value={address}
-//         />
-//         <View style={styles.pickerContainer}>
-//         <Picker
-//             selectedValue={sex}
-//             style={styles.picker}
-//             onValueChange={(itemValue) => setSex(itemValue)}>
-//             <Picker.Item label="Male" value="male" />
-//             <Picker.Item label="Female" value="female" />
-//             <Picker.Item label="Other" value="other" />
-//         </Picker>
-//         </View>
-//         <View style={styles.pickerContainer}>
-//         <Picker
-//             selectedValue={weight}
-//             style={styles.picker}
-//             onValueChange={(itemValue) => setWeight(itemValue)}>
-//             {/* Generate Weight options */}
-//             <Picker.Item label="50 kg" value="50" />
-//             {/* Add more options as needed */}
-//         </Picker>
-//         </View>
-//         <View style={styles.pickerContainer}>
-//         <Picker
-//             selectedValue={height}
-//             style={styles.picker}
-//             onValueChange={(itemValue) => setHeight(itemValue)}>
-//             {/* Generate Height options */}
-//             <Picker.Item label="170 cm" value="170" />
-//             {/* Add more options as needed */}
-//         </Picker>
-//         </View>
-//         <View style={styles.pickerContainer}>
-//         <Picker
-//             selectedValue={bloodType}
-//             style={styles.picker}
-//             onValueChange={(itemValue) => setBloodType(itemValue)}>
-//             <Picker.Item label="A+" value="A+" />
-//             <Picker.Item label="B+" value="B+" />
-//             {/* Add more options as needed */}
-//         </Picker>
-//         </View>
-//         <TextInput
-//         style={styles.input}
-//         placeholder="Pre-existing Conditions"
-//         onChangeText={setPreExistingConditions}
-//         value={preExistingConditions}
-//         />
-//     </ScrollView>
-//     );
- };
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-// const styles = StyleSheet.create({
-//     container: {
-//         padding: 20,
-//         justifyContent: 'center',
-//     },
-//     input: {
-//         height: 40,
-//         marginBottom: 15,
-//         borderWidth: 1,
-//         padding: 10,
-//         borderRadius: 5,
-//     },
-//     pickerContainer: {
-//         borderWidth: 1,
-//         marginBottom: 15,
-//         borderRadius: 5,
-//         borderColor: '#666',
-//     },
-//     picker: {
-//         height: 40,
-//         width: '100%',
-//     },
-// });
+    if (!result.cancelled) {
+      setProfileImage(result.uri);
+    }
+  };
 
-export default SignUp;
+  return (
+    <View style={styles.container}>
+      <View style={styles.radioContainer}>
+        <TouchableOpacity
+          style={styles.radioBtn}
+          onPress={() => setUserType('patient')}
+        >
+          <Text>Patient</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.radioBtn}
+          onPress={() => setUserType('doctor')}
+        >
+          <Text>Doctor</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TextInput placeholder="Name" style={styles.input} />
+      {userType === 'doctor' && (
+        <>
+          <TextInput placeholder="Specialization" style={styles.input} />
+          <TextInput placeholder="Biography" style={styles.input} multiline />
+          <TextInput placeholder="Education" style={styles.input} />
+          <TextInput placeholder="Years of Experience" style={styles.input} keyboardType="numeric" />
+        </>
+      )}
+      {userType === 'patient' && (
+        <>
+          <TextInput placeholder="Gender" style={styles.input} />
+          <TextInput placeholder="Date of Birth" style={styles.input} />
+          <TextInput placeholder="Pre-existing Conditions" style={styles.input} multiline />
+          <TextInput placeholder="Blood Type" style={styles.input} />
+          <TextInput placeholder="Weight" style={styles.input} keyboardType="numeric" />
+          <TextInput placeholder="Height" style={styles.input} keyboardType="numeric" />
+        </>
+      )}
+      <Button title="Pick an image from gallery" onPress={pickImage} />
+      {profileImage && <Image source={{ uri: profileImage }} style={{ width: 200, height: 200 }} />}
+      <Button title="Sign Up" onPress={() => console.log('Handle sign up...')} />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  radioBtn: {
+    marginHorizontal: 10,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+  },
+  input: {
+    width: 300,
+    padding: 10,
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+  },
+});
+
+export default SignUpPage;
