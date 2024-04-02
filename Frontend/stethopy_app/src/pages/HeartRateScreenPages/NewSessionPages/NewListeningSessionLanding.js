@@ -20,7 +20,7 @@ function NewListeningSessionLanding({ navigation, route }) {
       patient_id: 5
     };
     // Send the audio file to the Flask backend
-    const response = await axios.post('http://100.71.142.54:5000/sessions/create_session', jsonPayload);
+    const response = await axios.post('http://10.193.136.224:5000/sessions/create_session', jsonPayload);
     console.log(response);
 
     const newSessionId = response.data.id;

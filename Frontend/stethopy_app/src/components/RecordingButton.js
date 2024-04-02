@@ -109,7 +109,7 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
             recording_date: new Date().toISOString(),
           };
           // Send the audio file to the Flask backend
-          const response = await axios.post('http://100.71.142.54:5000/recordings/create', jsonPayload);
+          const response = await axios.post('http://10.193.136.224:5000/recordings/create', jsonPayload);
           console.log(response);
 
           console.log('Successfully sent audio file to backend and retrieved output.wav from post request');
