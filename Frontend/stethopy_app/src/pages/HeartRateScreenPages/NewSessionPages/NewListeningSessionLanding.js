@@ -7,52 +7,28 @@ import base64 from 'base64-js';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 
-Base = sqlalchemy.orm.declarative_base()
-
-//setup database connection
-engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
-Base.metadata.create_all(engine)
-
-//example usage
-
-//create a session
-Session = sessionmaker(bind=engine)
-session = Session()
-
 /**
  * !!!!!!
  * Not to be used in actual app design, but contains logic for recording button!
  */
 
-function NewListeningSessionLanding({ navigation }) {
+function NewListeningSessionLanding({ navigation, route }) {
+  const { sessionId, setSessionId } = route.params;
 
-  async function PressBeginListening() {
-    navigation.navigate('HeartRecordStep1');
-
-    const now = DateTime.now();
-    new_patient = Patient(
-      name='bob',
-      gender='F',
-      dob=now,
-      pre_existing_conditions='nah',
-      blood_type='G',
-      weight=2,
-      height=0,
-      profile_photo_id='u90erwu90uwe0r',
-    )
-
-    session.add(new_doctor)
-// # commit is just like git, "pushing" these changes to mysql
-// # can commit multiple changes at once
-    session.commit()
-
+  async function CreateNewSession() {
     const jsonPayload = {
-      patient_id: 1,
+      patient_id: 5
     };
+    // Send the audio file to the Flask backend
+    const response = await axios.post('http://100.71.142.54:5000/sessions/create_session', jsonPayload);
+    console.log(response);
 
-    const response = await axios.post('http://10.193.136.224:5000/sessions/create_session', jsonPayload);
+    const newSessionId = response.data.id;
+    setSessionId(newSessionId);
+
   }
 
+  
   return (
       <View style={styles.container}>
       
@@ -69,7 +45,11 @@ function NewListeningSessionLanding({ navigation }) {
     <Text style={styles.title}>How to use Stethopy</Text>
     
       <TouchableOpacity
-        onPress={PressBeginListening}
+        onPress={async () => {
+          await CreateNewSession();
+          navigation.navigate('HeartRecordStep1');
+          console.log('You tapped the button!');
+        }}
         style={styles.customButton}
       >
         <Text style={styles.title2}>

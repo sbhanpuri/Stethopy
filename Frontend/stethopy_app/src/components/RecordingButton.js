@@ -11,7 +11,7 @@ import axios from 'axios';
  * Not to be used in actual app design, but contains logic for recording button!
  */
 
-function RecordingButton({ navigation }) {
+function RecordingButton({ navigation, recording_type, patient_id }) {
 
   const [recording, setRecording] = useState(null);
   const [recordingStatus, setRecordingStatus] = useState('idle');
@@ -102,10 +102,14 @@ function RecordingButton({ navigation }) {
           const base64String = base64.fromByteArray(uint8Array);
 
           const jsonPayload = {
-            audio_data: base64String
+            audio_data: base64String,
+            patient_id: 5,
+            session_id: 16,
+            recording_type: 1,
+            recording_date: new Date().toISOString(),
           };
           // Send the audio file to the Flask backend
-          const response = await axios.post('http://10.193.136.224:5000/recordings/create', jsonPayload);
+          const response = await axios.post('http://100.71.142.54:5000/recordings/create', jsonPayload);
           console.log(response);
 
           console.log('Successfully sent audio file to backend and retrieved output.wav from post request');

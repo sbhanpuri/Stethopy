@@ -8,7 +8,8 @@ import Circle from '../../../components/images/Red_circle.svg.png';
 //import { FontAwesome } from '@expo/vector-icons';
 //import ListeningSessions from './ListeningSessions';
 
-const HeartRecordStep1 = ({ navigation }) => {
+const HeartRecordStep1 = ({ navigation, route }) => {
+  const { sessionId } = route.params;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -38,7 +39,7 @@ const HeartRecordStep1 = ({ navigation }) => {
         
         
         
-        <RecordingButton></RecordingButton>
+        <RecordingButton navigation={navigation} recording_type={1} patient_id={1} />
       </View>
 
   );
