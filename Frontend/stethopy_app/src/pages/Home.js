@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white', // Change the background color as needed
   },
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: 350,
     height: 230,
     resizeMode: 'contain', // Adjust the resizeMode as per your requirement
-    top: -135,
+    top: 0,
     
   },
 });
