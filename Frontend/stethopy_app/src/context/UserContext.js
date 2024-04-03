@@ -1,18 +1,20 @@
 import React, { createContext, useContext, useState } from 'react';
 
+// Step 1: Create the Context
 const UserContext = createContext();
 
-export const useUser = () => useContext(UserContext);
-
+// Step 2: Create a Provider Component
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Initialize user state as null or a default state
+  const [user, setUser] = useState(null); // Initially, no user is logged in
 
+  // Function to log in the user
   const login = (userData) => {
-    setUser(userData); // A function to update the user state, e.g., upon login
+    setUser(userData);
   };
 
+  // Function to log out the user
   const logout = () => {
-    setUser(null); // Reset user state, e.g., upon logout
+    setUser(null);
   };
 
   return (
@@ -21,3 +23,6 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+// Step 3: Create a custom hook to use the context
+export const useUser = () => useContext(UserContext);
