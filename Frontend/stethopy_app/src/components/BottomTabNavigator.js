@@ -8,7 +8,7 @@ const BottomTabNavigator = () => {
     return (
       <View style={styles.horizontalContainer}>
         <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('Home')}>
-            <Ionicons name="home-outline" size={24} color="black" />            
+            <Ionicons name="home" size={24} color="black" />            
             <Text style={styles.text}>Home</Text>
         </TouchableOpacity>
 
@@ -31,20 +31,20 @@ const styles = StyleSheet.create({
     horizontalContainer: {
         flex: 3,
         flexDirection: 'row',
-
         padding: 20,
         columnGap: 20,
         alignItems: "center",
-        backgroundColor: '#009FB7',
+        backgroundColor: '#9fc5e8',
         position: 'absolute',
         bottom: 20,
-        borderRadius: 50
+        borderRadius: 50,
     },
     verticalContainer: {
         alignItems: "center"
     },
     text: {
-        fontSize: 10
+        fontSize: 10,
+        color: 'black',
     }
     
 })
