@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
 // import BottomTabNavigator from '../../../components/BottomTabNavigator';
 import RecordingButton from '../../../components/RecordingButton'
@@ -9,6 +9,8 @@ import Circle from '../../../components/images/Red_circle.svg.png';
 //import ListeningSessions from './ListeningSessions';
 
 const HeartRecordStep1 = ({ navigation }) => {
+  const [recordingStatus, setRecordingStatus] = useState('idle');
+  // console.log(recordingStatus + 'in page')
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -25,7 +27,9 @@ const HeartRecordStep1 = ({ navigation }) => {
         <Text style={styles.description}>
             Place Stethoscope at Location Indicated by Red Circle
         </Text> 
-        
+        {(recordingStatus === 'recording') ?
+        <Text>Finish recording before going to next page!</Text>
+        :
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('HeartRecordStep2');
@@ -35,10 +39,17 @@ const HeartRecordStep1 = ({ navigation }) => {
         >
         <Text style={styles.buttonText}>Next Measurement</Text>
         </TouchableOpacity>
+        }
         
-        
-        
-        <RecordingButton></RecordingButton>
+        {/* <RecordingButton
+          onPress={()=>{setRecordingStatus('recording')}}
+          prop={recordingStatus}
+          
+        ></RecordingButton> */}
+        <RecordingButton
+          onPress={() => setRecordingStatus('recording')}
+          prop={recordingStatus}
+        />
       </View>
 
   );
