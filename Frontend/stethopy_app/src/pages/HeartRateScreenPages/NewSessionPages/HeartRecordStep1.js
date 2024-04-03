@@ -9,7 +9,8 @@ import Circle from '../../../components/images/Red_circle.svg.png';
 //import ListeningSessions from './ListeningSessions';
 
 const HeartRecordStep1 = ({ navigation }) => {
-  const [recordingStatus, setRecordingStatus] = useState('idle');
+  //const [recordingStatus, setRecordingStatus] = useState('idle');
+  const [isVisible, setIsVisible] = useState(true);
   // console.log(recordingStatus + 'in page')
   return (
     <View style={styles.container}>
@@ -27,7 +28,7 @@ const HeartRecordStep1 = ({ navigation }) => {
         <Text style={styles.description}>
             Place Stethoscope at Location Indicated by Red Circle
         </Text> 
-        {(recordingStatus === 'recording') ?
+        {(!isVisible) ?
         <Text>Finish recording before going to next page!</Text>
         :
         <TouchableOpacity
@@ -46,10 +47,7 @@ const HeartRecordStep1 = ({ navigation }) => {
           prop={recordingStatus}
           
         ></RecordingButton> */}
-        <RecordingButton
-          onPress={() => setRecordingStatus('recording')}
-          prop={recordingStatus}
-        />
+        <RecordingButton/>
       </View>
 
   );

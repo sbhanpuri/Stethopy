@@ -13,18 +13,20 @@ import { useNavigation } from '@react-navigation/native';
  * Not to be used in actual app design, but contains logic for recording button!
  */
 
-const RecordingButton = ({ onPress, prop }) => {
+const RecordingButton = () => {
   // console.log(prop);
   const navigation = useNavigation();
   const [showTimer, setShowTimer] = useState(false);
   const [recording, setRecording] = useState(null);
-  const [recordingStatus, setRecordingStatus] = useState(prop);
+  const [recordingStatus, setRecordingStatus] = useState('idle');
   const [audioPermission, setAudioPermission] = useState(null);
   const [waveformPlot, setWaveformPlot] = useState(null);
   const [previousTime, setPreviousTime] = useState(null);
   const [timer, setTimer] = useState(0);
-  const [autoTimerStop, setAutoTimerStop] = useState();
-  const [timerVisible, setTimerVisible] = useState(true);  
+  //const [autoTimerStop, setAutoTimerStop] = useState();
+  //const [timerVisible, setTimerVisible] = useState(true);  
+
+  
 
   const TimerComponent = ({ recordingStatus }) => {
 
@@ -63,17 +65,16 @@ const RecordingButton = ({ onPress, prop }) => {
     }, [navigation]);
 
     //get it to stop recording after 30 seconds
-    //get timer to completely stop, so when you return to the page, it doesn't start running from 0 unless you press start
-
+    //get timer to completely stop, so when you return to the page, it doesn't start running from 0 unless you press start 
     useEffect(() => {
       const interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
       console.log("Timer", timer)
-      setIsTimerRunning(false);
-      setPreviousTime(timer);
+      //setIsTimerRunning(false);
+      //setPreviousTime(timer);
       return () => clearInterval(interval);
-      console.log(previousTime);
+      //console.log(previousTime);
   }, [recordingStatus, timer]);
     if (timer < 10) {
       return (
@@ -105,7 +106,7 @@ const RecordingButton = ({ onPress, prop }) => {
     getPermission()
 
     return () => {
-      if (recording) {
+      if (recordingStatus === 'recording') {
         stopRecording();
       }
     };
@@ -158,7 +159,7 @@ const RecordingButton = ({ onPress, prop }) => {
         // await playbackObject.playAsync();
 
         setRecording(null);
-        setRecordingStatus('idle');
+        setRecordingStatus('stopped');
         setPreviousTime(timer);
         
         return FileSystem.documentDirectory + 'recordings/' + `${fileName}`;
@@ -168,8 +169,7 @@ const RecordingButton = ({ onPress, prop }) => {
     }
   };
 
-  async function RecordButtonPress({ navigation, onPress }) {
-    onPress();
+  async function RecordButtonPress({ navigation }) {
     try{
       if (timer > 0 || navigation) {
         setTimer(0);
@@ -218,15 +218,15 @@ const RecordingButton = ({ onPress, prop }) => {
         Tap to Record
       </Text>
 
-      <TouchableOpacity style={styles.recordButton} onPress={RecordButtonPress(onPress)} >
-        <FontAwesome name={recording && timer < 3 ? 'stop-circle' : 'circle'} size={36} color="red" />
+      <TouchableOpacity style={styles.recordButton} onPress={RecordButtonPress} >
+        <FontAwesome name={recording ? 'stop-circle' : 'circle'} size={36} color="red" />
       </TouchableOpacity>
       {/* <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}
       </Text> */}
 
       {recordingStatus === 'recording' && <TimerComponent />}
-      {recordingStatus === 'idle' && previousTime<10 && <Text style={styles.timerAfter}>Duration: 00:0{previousTime}</Text>}
-      {recordingStatus === 'idle' && previousTime>=10 && <Text style={styles.timerAfter}>Duration: 00:{previousTime}</Text>}
+      {recordingStatus === 'stopped' && previousTime<10 && <Text style={styles.timerAfter}>Duration: 00:0{previousTime}</Text>}
+      {recordingStatus === 'stopped' && previousTime>=10 && <Text style={styles.timerAfter}>Duration: 00:{previousTime}</Text>}
 
 
       {waveformPlot && (
