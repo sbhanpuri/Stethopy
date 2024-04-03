@@ -105,7 +105,7 @@ function RecordingButton({ navigation }) {
             audio_data: base64String
           };
           // Send the audio file to the Flask backend
-          const response = await axios.post('http://192.168.86.249:50432/process-audio', jsonPayload);
+          const response = await axios.post('http://10.193.136.224:5000/sessions/process-audio', jsonPayload);
           console.log(response);
 
           console.log('Successfully sent audio file to backend and retrieved output.wav from post request');

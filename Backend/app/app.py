@@ -26,6 +26,6 @@ if __name__ == '__main__':
     app.register_blueprint(visualization_blueprint, url_prefix='/visualizations')
     app.register_blueprint(recording_blueprint, url_prefix='/recordings')
     app.register_blueprint(session_blueprint, url_prefix='/sessions')
-    app.run(debug=True)
+    app.run(debug=True, host='10.193.136.224')
     # import api blueprint
     
