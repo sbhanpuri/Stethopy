@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   customButton2: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     top: 10,
