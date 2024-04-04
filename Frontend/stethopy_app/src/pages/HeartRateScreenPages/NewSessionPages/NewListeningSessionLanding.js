@@ -12,9 +12,23 @@ import axios from 'axios';
  * Not to be used in actual app design, but contains logic for recording button!
  */
 
-function NewListeningSessionLanding({ navigation }) {
+function NewListeningSessionLanding({ navigation, route }) {
+  const { sessionId, setSessionId } = route.params;
 
+  async function CreateNewSession() {
+    const jsonPayload = {
+      patient_id: 5
+    };
+    // Send the audio file to the Flask backend
+    const response = await axios.post('http://10.193.136.224:5000/sessions/create_session', jsonPayload);
+    console.log(response);
 
+    const newSessionId = response.data.id;
+    setSessionId(newSessionId);
+
+  }
+
+  
   return (
       <View style={styles.container}>
       
@@ -31,7 +45,8 @@ function NewListeningSessionLanding({ navigation }) {
     <Text style={styles.title}>How to use Stethopy</Text>
     
       <TouchableOpacity
-        onPress={() => {
+        onPress={async () => {
+          await CreateNewSession();
           navigation.navigate('HeartRecordStep1');
           console.log('You tapped the button!');
         }}

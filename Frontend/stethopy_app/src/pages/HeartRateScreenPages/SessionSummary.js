@@ -44,7 +44,7 @@ const SessionSummary = ({ navigation }) => {
       }}
       style={styles.customButton2}
     >
-    <Text style={styles.buttonText}>All Recordings</Text>
+    <Text style={styles.buttonText}>Done</Text>
     </TouchableOpacity>
       
       <BottomTabNavigator></BottomTabNavigator>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -30,6 +31,7 @@ const Stack = createNativeStackNavigator();
 
 
 const RootStack = () => {
+  const [sessionId, setSessionId] = useState(null);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
@@ -38,11 +40,16 @@ const RootStack = () => {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="ListeningSessions" component={ListeningSessions} />
         <Stack.Screen name="SessionSummary" component={SessionSummary} />
-        <Stack.Screen name="HeartRecordStep1" component={HeartRecordStep1} />
+        {/* <Stack.Screen name="HeartRecordStep1" component={HeartRecordStep1} />
         <Stack.Screen name="HeartRecordStep2" component={HeartRecordStep2} />
         <Stack.Screen name="HeartRecordStep3" component={HeartRecordStep3} />
-        <Stack.Screen name="HeartRecordStep4" component={HeartRecordStep4} />
-        <Stack.Screen name="NewListeningSessionPage" component={NewListeningSessionLanding} />
+        <Stack.Screen name="HeartRecordStep4" component={HeartRecordStep4} /> */}
+        <Stack.Screen name="HeartRecordStep1" component={HeartRecordStep1} initialParams={{ sessionId }} />
+        <Stack.Screen name="HeartRecordStep2" component={HeartRecordStep2} initialParams={{ sessionId }} />
+        <Stack.Screen name="HeartRecordStep3" component={HeartRecordStep3} initialParams={{ sessionId }} />
+        <Stack.Screen name="HeartRecordStep4" component={HeartRecordStep4} initialParams={{ sessionId }} />
+        {/* <Stack.Screen name="NewListeningSessionPage" component={NewListeningSessionLanding} /> */}
+        <Stack.Screen name="NewListeningSessionPage" component={NewListeningSessionLanding} initialParams={{ sessionId, setSessionId }} />
         <Stack.Screen name="PastSessionListeningPage" component={PastSessionListeningPage} />
         <Stack.Screen name="Log In" component={LogInPage} />
         <Stack.Screen name="Sign Up" component={SignUpPage} />

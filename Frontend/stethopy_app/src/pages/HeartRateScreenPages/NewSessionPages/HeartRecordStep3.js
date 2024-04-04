@@ -4,7 +4,8 @@ import RecordingButton from '../../../components/RecordingButton';
 import RecordPageImage from '../../../components/images/RecordPage1Image.jpg';
 import Circle from '../../../components/images/Red_circle.svg.png';
 
-const HeartRecordStep3 = ({ navigation }) => {
+const HeartRecordStep3 = ({ navigation, route }) => {
+  const { sessionId } = route.params;
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -42,7 +43,7 @@ const HeartRecordStep3 = ({ navigation }) => {
       </TouchableOpacity>
       
       {/* <BottomTabNavigator></BottomTabNavigator> */}
-      <RecordingButton></RecordingButton>
+      <RecordingButton navigation={navigation} recording_type={3} patient_id={1} />
     </View>
   );
 };

@@ -1,6 +1,7 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
+
 import * as FileSystem from 'expo-file-system';
 import base64 from 'base64-js';
 import { FontAwesome } from '@expo/vector-icons';
@@ -13,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
  * Not to be used in actual app design, but contains logic for recording button!
  */
 
-const RecordingButton = () => {
+function RecordingButton({ recording_type, patient_id }) {
   // console.log(prop);
   const navigation = useNavigation();
   const [showTimer, setShowTimer] = useState(false);
@@ -109,9 +110,37 @@ const RecordingButton = () => {
       if (recordingStatus === 'recording') {
         stopRecording();
       }
+      
     };
   }, []);
 
+  // async function playbackEncodedDecodedAudio() {
+  //   try {
+  //     // Assuming you already have a recordingUri from a previous recording
+  //     const recordingUri = recording.getURI();
+  
+  //     // Encode the audio file content to Base64
+  //     const fileContent = await FileSystem.readAsStringAsync(recordingUri, { encoding: FileSystem.EncodingType.Base64 });
+  
+  //     // Immediately decode it back to binary (array buffer)
+  //     const decodedAudio = base64.toByteArray(fileContent);
+  
+  //     // For playback, you might need to write the decoded audio back to a file,
+  //     // since the Expo Audio API requires a URI to play from
+  //     const newPath = FileSystem.documentDirectory + 'tempDecodedAudio.wav'; // Adjust the file extension if necessary
+  
+  //     // Write the decoded array buffer back to a new file
+  //     await FileSystem.writeAsStringAsync(newPath, base64.fromByteArray(decodedAudio), { encoding: FileSystem.EncodingType.Base64 });
+  
+  //     // Playback the newly created file
+  //     const playbackObject = new Audio.Sound();
+  //     await playbackObject.loadAsync({ uri: newPath });
+  //     await playbackObject.playAsync();
+  //   } catch (error) {
+  //     console.error('Error during encoding/decoding playback test:', error);
+  //   }
+  // }
+  
 
   const startRecording = async() => {
     try {
@@ -185,10 +214,14 @@ const RecordingButton = () => {
             const base64String = base64.fromByteArray(uint8Array);
   
             const jsonPayload = {
-              audio_data: base64String
+              audio_data: base64String,
+              patient_id: 5,
+              session_id: 16,
+              recording_type: 1,
+              recording_date: new Date().toISOString(),
             };
             // Send the audio file to the Flask backend
-            const response = await axios.post('http://10.193.136.224:5000/sessions/process-audio', jsonPayload);
+            const response = await axios.post('http://10.193.136.224:5000/recordings/create', jsonPayload);
             console.log(response);
   
             console.log('Successfully sent audio file to backend and retrieved output.wav from post request');

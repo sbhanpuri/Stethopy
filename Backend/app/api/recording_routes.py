@@ -8,9 +8,10 @@ def api_hello_world():
     return("hello!")
 
 # POST /api/recordings to create a new recording
-@recording_blueprint.route('/', methods=['POST'])
+@recording_blueprint.route('/create', methods=['POST'])
 def api_create_recording():
     data = request.get_json()
+    # return audio_processing(data)
     new_recording = create_audio_record(data)
     return jsonify(new_recording.to_dict()), 201
 

@@ -3,4 +3,4 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 import sqlalchemy
 import datetime
-from app import config
+# from app import config

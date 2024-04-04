@@ -12,7 +12,7 @@ class AudioRecords(Base):
     updated_at = Column(DateTime)
     session_id = Column(Integer, ForeignKey('sessions.id'))
     # Relationship
-    patient = relationship("Patient")
+    # patient = relationship("patients")
 
     def __init__(self, patient_id, file_path, recording_date, recording_type, session_id, created_at=None, updated_at=None):
         self.patient_id = patient_id

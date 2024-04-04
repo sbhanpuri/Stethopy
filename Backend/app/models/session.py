@@ -5,7 +5,7 @@ class Session(Base):
     id = Column(Integer, primary_key=True)
     patient_id = Column(Integer, ForeignKey('patients.id'))
     start_time = Column(DateTime, default=datetime.datetime.now)
-    end_time = Column(DateTime)
+    end_time = Column(DateTime, default=datetime.datetime.now)
     # Relationship with AudioRecords
     audio_records = relationship("AudioRecords", backref="session")
 
