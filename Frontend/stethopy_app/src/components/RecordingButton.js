@@ -1,6 +1,7 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
+
 import * as FileSystem from 'expo-file-system';
 import base64 from 'base64-js';
 import { FontAwesome } from '@expo/vector-icons';
@@ -17,6 +18,8 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
   const [recordingStatus, setRecordingStatus] = useState('idle');
   const [audioPermission, setAudioPermission] = useState(null);
   const [waveformPlot, setWaveformPlot] = useState(null);
+
+
 
   useEffect(() => {
 
@@ -35,8 +38,38 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
       if (recording) {
         stopRecording();
       }
+      
     };
   }, []);
+
+
+  // async function playbackEncodedDecodedAudio() {
+  //   try {
+  //     // Assuming you already have a recordingUri from a previous recording
+  //     const recordingUri = recording.getURI();
+  
+  //     // Encode the audio file content to Base64
+  //     const fileContent = await FileSystem.readAsStringAsync(recordingUri, { encoding: FileSystem.EncodingType.Base64 });
+  
+  //     // Immediately decode it back to binary (array buffer)
+  //     const decodedAudio = base64.toByteArray(fileContent);
+  
+  //     // For playback, you might need to write the decoded audio back to a file,
+  //     // since the Expo Audio API requires a URI to play from
+  //     const newPath = FileSystem.documentDirectory + 'tempDecodedAudio.wav'; // Adjust the file extension if necessary
+  
+  //     // Write the decoded array buffer back to a new file
+  //     await FileSystem.writeAsStringAsync(newPath, base64.fromByteArray(decodedAudio), { encoding: FileSystem.EncodingType.Base64 });
+  
+  //     // Playback the newly created file
+  //     const playbackObject = new Audio.Sound();
+  //     await playbackObject.loadAsync({ uri: newPath });
+  //     await playbackObject.playAsync();
+  //   } catch (error) {
+  //     console.error('Error during encoding/decoding playback test:', error);
+  //   }
+  // }
+  
 
 
   async function startRecording() {
@@ -76,9 +109,10 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
 
         });
 
-        // const playbackObject = new Audio.Sound();
-        // await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}`});
-        // await playbackObject.playAsync();
+        const playbackObject = new Audio.Sound();
+        await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}`});
+        await playbackObject.playAsync();
+        // playbackEncodedDecodedAudio();
 
         setRecording(null);
         setRecordingStatus('stopped');
