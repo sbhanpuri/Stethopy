@@ -71,16 +71,7 @@ const styles = StyleSheet.create({
     width: 150,
   },
   customButton2: {
-    backgroundColor: '#009FB7',
-    borderRadius: 50,
-    position: 'absolute',
-    bottom: 50,
-    right: 20,
-    padding: 10,
-    width: 150,
-  },
-  customButton2: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     top: 10,

@@ -6,20 +6,92 @@ import * as FileSystem from 'expo-file-system';
 import base64 from 'base64-js';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 /**
  * !!!!!!
  * Not to be used in actual app design, but contains logic for recording button!
  */
 
-function RecordingButton({ navigation, recording_type, patient_id }) {
-
+const RecordingButton = () => {
+  // console.log(prop);
+  const navigation = useNavigation();
+  const [showTimer, setShowTimer] = useState(false);
   const [recording, setRecording] = useState(null);
   const [recordingStatus, setRecordingStatus] = useState('idle');
   const [audioPermission, setAudioPermission] = useState(null);
   const [waveformPlot, setWaveformPlot] = useState(null);
+  const [previousTime, setPreviousTime] = useState(null);
+  const [timer, setTimer] = useState(0);
+  //const [autoTimerStop, setAutoTimerStop] = useState();
+  //const [timerVisible, setTimerVisible] = useState(true);  
 
+  
 
+  const TimerComponent = ({ recordingStatus }) => {
+
+    //Create a function and call stopRecording when timer hits 10 seconds
+    /*function autoStop() {
+      setTimeout(() => {
+        stopRecording();
+      }, 10000);
+    };*/
+
+    /*useEffect(() => {
+      return () => {
+        setTimerVisible(false);
+        setTimer(0);
+      }
+    }, []);
+  
+    useEffect(() => {
+      if (!timerVisible) {
+        setTimerVisible(true);
+        setTimer(0);
+      }
+    }, [timerVisible]);*/
+
+    const [isTimerRunning, setIsTimerRunning] = useState(false);
+    
+    useEffect(() => {
+      // Watch for changes in the navigation state
+      const unsubscribe = navigation.addListener('state', () => {
+        stopRecording();
+        setTimer(0); // Reset timer to 0 if navigation changes
+        
+      });
+    
+      return unsubscribe; // Clean up the subscription when the component unmounts
+    }, [navigation]);
+
+    //get it to stop recording after 30 seconds
+    //get timer to completely stop, so when you return to the page, it doesn't start running from 0 unless you press start 
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1);
+      }, 1000);
+      console.log("Timer", timer)
+      //setIsTimerRunning(false);
+      //setPreviousTime(timer);
+      return () => clearInterval(interval);
+      //console.log(previousTime);
+  }, [recordingStatus, timer]);
+    if (timer < 10) {
+      return (
+        <Text style={styles.timer}>
+          00:0{timer}
+        </Text>
+      )
+    } else {
+      return (
+        <Text style={styles.timer}>
+          00:{timer}
+        </Text>      
+      )
+    }
+  };
+  
 
   useEffect(() => {
 
@@ -35,7 +107,7 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
     getPermission()
 
     return () => {
-      if (recording) {
+      if (recordingStatus === 'recording') {
         stopRecording();
       }
       
@@ -43,36 +115,7 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
   }, []);
 
 
-  // async function playbackEncodedDecodedAudio() {
-  //   try {
-  //     // Assuming you already have a recordingUri from a previous recording
-  //     const recordingUri = recording.getURI();
-  
-  //     // Encode the audio file content to Base64
-  //     const fileContent = await FileSystem.readAsStringAsync(recordingUri, { encoding: FileSystem.EncodingType.Base64 });
-  
-  //     // Immediately decode it back to binary (array buffer)
-  //     const decodedAudio = base64.toByteArray(fileContent);
-  
-  //     // For playback, you might need to write the decoded audio back to a file,
-  //     // since the Expo Audio API requires a URI to play from
-  //     const newPath = FileSystem.documentDirectory + 'tempDecodedAudio.wav'; // Adjust the file extension if necessary
-  
-  //     // Write the decoded array buffer back to a new file
-  //     await FileSystem.writeAsStringAsync(newPath, base64.fromByteArray(decodedAudio), { encoding: FileSystem.EncodingType.Base64 });
-  
-  //     // Playback the newly created file
-  //     const playbackObject = new Audio.Sound();
-  //     await playbackObject.loadAsync({ uri: newPath });
-  //     await playbackObject.playAsync();
-  //   } catch (error) {
-  //     console.error('Error during encoding/decoding playback test:', error);
-  //   }
-  // }
-  
-
-
-  async function startRecording() {
+  const startRecording = async() => {
     try {
       if (audioPermission) {
         await Audio.setAudioModeAsync({
@@ -81,20 +124,24 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
         })
       }
 
+      if (recording) {
+        console.log('Stopping previous recording');
+        await recording.stopAndUnloadAsync();
+      }
       const newRecording = new Audio.Recording();
       console.log('Starting Recording')
+
       await newRecording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
       await newRecording.startAsync();
       setRecording(newRecording);
       setRecordingStatus('recording');
-
     } catch (error) {
       console.error('Failed to start recording', error);
     }
-  }
+  };
 
 
-  async function stopRecording() {
+  const stopRecording = async({ previousTime }) => {
     try {
       if (recordingStatus === 'recording') {
         console.log('Stopping Recording')
@@ -108,58 +155,61 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
           to: FileSystem.documentDirectory + 'recordings/' + `${fileName}`
 
         });
-
-        const playbackObject = new Audio.Sound();
-        await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}`});
-        await playbackObject.playAsync();
-        // playbackEncodedDecodedAudio();
+        //setDuration(previousTime);
+        // const playbackObject = new Audio.Sound();
+        // await playbackObject.loadAsync({ uri: FileSystem.documentDirectory + 'recordings/' + `${fileName}`});
+        // await playbackObject.playAsync();
 
         setRecording(null);
         setRecordingStatus('stopped');
-
+        setPreviousTime(timer);
+        
         return FileSystem.documentDirectory + 'recordings/' + `${fileName}`;
       }
     } catch (error) {
       console.error('Failed to stop recording', error);
     }
-  }
+  };
 
-  async function RecordButtonPress() {
-    if (recording) {
-      const audioUri = await stopRecording(recording);
-      if (audioUri) {
-        console.log('Saved audio file to', audioUri);
-
-        try {
-          const fileContent = await FileSystem.readAsStringAsync(audioUri, { encoding: FileSystem.EncodingType.Base64 });
-          const uint8Array = base64.toByteArray(fileContent);
-          const base64String = base64.fromByteArray(uint8Array);
-
-          const jsonPayload = {
-            audio_data: base64String,
-            patient_id: 5,
-            session_id: 16,
-            recording_type: 1,
-            recording_date: new Date().toISOString(),
-          };
-          // Send the audio file to the Flask backend
-          const response = await axios.post('http://10.193.136.224:5000/recordings/create', jsonPayload);
-          console.log(response);
-
-          console.log('Successfully sent audio file to backend and retrieved output.wav from post request');
-
-          const waveformPlotBase64 = response.data.waveform_plot;
-
-          // Display waveform plot as an image in your React Native component
-          setWaveformPlot(waveformPlotBase64);
-
-
-        } catch (error) {
-          console.error('Error sending audio file to backend:', error);
-        }
+  async function RecordButtonPress({ navigation }) {
+    try{
+      if (timer > 0 || navigation) {
+        setTimer(0);
       }
-    } else {
-      await startRecording();
+      if (recording) {
+        const audioUri = await stopRecording(recording);
+        if (audioUri) {
+          console.log('Saved audio file to', audioUri);
+  
+          try {
+            const fileContent = await FileSystem.readAsStringAsync(audioUri, { encoding: FileSystem.EncodingType.Base64 });
+            const uint8Array = base64.toByteArray(fileContent);
+            const base64String = base64.fromByteArray(uint8Array);
+  
+            const jsonPayload = {
+              audio_data: base64String
+            };
+            // Send the audio file to the Flask backend
+            const response = await axios.post('http://10.193.136.224:5000/sessions/process-audio', jsonPayload);
+            console.log(response);
+  
+            console.log('Successfully sent audio file to backend and retrieved output.wav from post request');
+  
+            const waveformPlotBase64 = response.data.waveform_plot;
+  
+            // Display waveform plot as an image in your React Native component
+            setWaveformPlot(waveformPlotBase64);
+  
+  
+          } catch (error) {
+            console.error('Error sending audio file to backend:', error);
+          }
+        }
+      } else {
+        await startRecording();
+      }
+    } catch (error) {
+      console.error('Error during recording or processing:', error);
     }
   }
 
@@ -170,12 +220,16 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
         Tap to Record
       </Text>
 
-      <TouchableOpacity style={styles.recordButton}
-        onPress={RecordButtonPress}>
+      <TouchableOpacity style={styles.recordButton} onPress={RecordButtonPress} >
         <FontAwesome name={recording ? 'stop-circle' : 'circle'} size={36} color="red" />
       </TouchableOpacity>
       {/* <Text style={styles.recordingStatusText}>{`Recording status: ${recordingStatus}`}
       </Text> */}
+
+      {recordingStatus === 'recording' && <TimerComponent />}
+      {recordingStatus === 'stopped' && previousTime<10 && <Text style={styles.timerAfter}>Duration: 00:0{previousTime}</Text>}
+      {recordingStatus === 'stopped' && previousTime>=10 && <Text style={styles.timerAfter}>Duration: 00:{previousTime}</Text>}
+
 
       {waveformPlot && (
         <Image source={{ uri: `data:image/png;base64,${waveformPlot}` }} style={{ width: 300, height: 150 }} />
@@ -186,6 +240,19 @@ function RecordingButton({ navigation, recording_type, patient_id }) {
 
 
 const styles = StyleSheet.create({
+  timerAfter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 25,
+    marginLeft: 10,
+  },
+  timer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 37,
+    marginTop: 20,
+    fontSize: 20,
+  },
   title: {
     justifyContent: 'center',
     fontSize: 24, // Change the font size as needed
@@ -229,3 +296,52 @@ const styles = StyleSheet.create({
 
 
 export default RecordingButton;
+
+
+// Conditionally render the duration text based on the duration value  
+
+  /*useEffect(() => {
+    return () => {
+      setTimerVisible(false);
+      setTimerValue(0);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!timerVisible) {
+      setTimerVisible(true);
+      setTimerValue(0);
+    }
+  }, [timerVisible]);*/
+
+  /*const HomeScreen = ({ navigation }) => {  
+    // Effect to show the timer when navigating to the Home screen
+    useEffect(() => {
+      setShowTimer(true);
+    }, [navigation]);
+    return (
+      <View>
+        {showTimer && <TimerComponent />}
+      </View>
+    );
+  };
+
+  const OtherScreen =({ navigation }) => {
+    useEffect(() => {
+      setShowTimer(false);
+      setTimer(0);
+    }, [navigation]);
+    return (
+      <View>
+        {!showTimer && <TimerComponent />}
+      </View>
+    );
+  };*/
+
+  /*async function startRecordingAndAutoStop() {
+    // Start the recording asynchronously
+    await startRecording();
+  
+    // After starting the recording, call autoStop() to automatically stop recording after 10 seconds
+    autoStop();
+  }*/

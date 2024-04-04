@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
 // import BottomTabNavigator from '../../../components/BottomTabNavigator';
 import RecordingButton from '../../../components/RecordingButton'
@@ -8,8 +8,10 @@ import Circle from '../../../components/images/Red_circle.svg.png';
 //import { FontAwesome } from '@expo/vector-icons';
 //import ListeningSessions from './ListeningSessions';
 
-const HeartRecordStep1 = ({ navigation, route }) => {
-  const { sessionId } = route.params;
+const HeartRecordStep1 = ({ navigation }) => {
+  //const [recordingStatus, setRecordingStatus] = useState('idle');
+  const [isVisible, setIsVisible] = useState(true);
+  // console.log(recordingStatus + 'in page')
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -26,7 +28,9 @@ const HeartRecordStep1 = ({ navigation, route }) => {
         <Text style={styles.description}>
             Place Stethoscope at Location Indicated by Red Circle
         </Text> 
-        
+        {(!isVisible) ?
+        <Text>Finish recording before going to next page!</Text>
+        :
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('HeartRecordStep2');
@@ -36,10 +40,14 @@ const HeartRecordStep1 = ({ navigation, route }) => {
         >
         <Text style={styles.buttonText}>Next Measurement</Text>
         </TouchableOpacity>
+        }
         
-        
-        
-        <RecordingButton navigation={navigation} recording_type={1} patient_id={1} />
+        {/* <RecordingButton
+          onPress={()=>{setRecordingStatus('recording')}}
+          prop={recordingStatus}
+          
+        ></RecordingButton> */}
+        <RecordingButton/>
       </View>
 
   );
@@ -76,7 +84,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   customButton: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     bottom: 50,
@@ -84,7 +92,6 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 150,
   },
- 
   button: {
     width: '90%', // Adjust the width as needed
     marginTop: 20, // Adjust the margin as needed

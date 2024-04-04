@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
   collapseButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#9fc5e8',
     borderRadius: 8,
   },
   infoContainer: {
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   },
   editableInput: {
     borderWidth: 1,
-    borderColor: 'lightgrey',
+    borderColor: '#9fc5e8',
     borderRadius: 5,
     padding: 8,
   },
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     padding: 10,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#9fc5e8',
     borderRadius: 8,
   },
   saveButton: {
