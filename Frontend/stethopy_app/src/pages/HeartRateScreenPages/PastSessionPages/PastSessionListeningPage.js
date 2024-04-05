@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import BottomTabNavigator from '../../../components/BottomTabNavigator';
 import BannerImage from '../../../components/images/HeartAndBanner.png';
@@ -6,39 +7,39 @@ import BannerImage from '../../../components/images/HeartAndBanner.png';
 
 
 const PastSessionListeningPage = ({ navigation }) => {
+  const [sessionDictionary, setSessionDictionary] = useState({});
   const fetchSessions = async () => {
     try {
       const response = await axios.get(`http://10.193.136.224:5000/sessions`);
       // const audios = Object.values(response.audio_records)
       // list of audio recordings as dict 
       const sessions = response.data;
-      console.log("about to print array")
-      console.log(sessions);
-      for (let i = 0; i < arrayOfAudioRecords.length; i++) {
-        const item = arrayOfAudioRecords[i];
-        // const audioUrl = decodeAudio(item.encoded_audio);
-        const recording_type = item.recording_type;
-        if (recording_type == 1) {
-          setWaveformPlot1(item.waveform_plot);
-        } else if (recording_type == 2) {
-          setWaveformPlot2(item.waveform_plot);
-        } else if (recording_type == 3) {
-          setWaveformPlot3(item.waveform_plot);
-        } else if (recording_type == 4) {
-          setWaveformPlot4(item.waveform_plot);
-        }
-        audioDictionary[recording_type] = item.encoded_audio;
-        
-        // playbackEncodedDecodedAudio(item.encoded_audio);
-        // audioDictionary[recording_type] = audioUrl;
-        // console.log(item); 
+      const newDictionary = {...sessionDictionary}
+      for (let i = 0; i < sessions.length; i++) {
+        const session = sessions[i];
+        const session_id = session.session_id;
+        newDictionary[session_id] = session;
+        setSessionDictionary(newDictionary);
       }
-      // console.log(item); 
     } catch (error) {
       console.error("An error occurred:", error);
     }
   };
+
+  
+
   return (
+    // {Object.values(sessionDictionary).map(session => (
+    //   <TouchableOpacity
+    //   key={session.session_id}
+    //   onPress={() => {
+    //     navigation.navigate('SessionSummary', { sessionId: session.session_id });
+    //   }}
+    //   style={styles.sessionButton}
+    //   >
+    //   <Text style={styles.buttonText}>{session.start_time}</Text>
+    //   </TouchableOpacity>
+    // ))}
     <View style={styles.container}>
       <Text style={styles.title}>
         INSERT DATE
@@ -47,7 +48,18 @@ const PastSessionListeningPage = ({ navigation }) => {
         source={BannerImage}
         style={styles.image}
       />
-
+      {Object.values(sessionDictionary).map(session => (
+        <TouchableOpacity
+          key={session.session_id}
+          onPress={() => {
+            navigation.navigate('SessionSummary', { sessionId: session.session_id });
+          }}
+          style={styles.sessionButton}
+        >
+          <Text style={styles.buttonText}>{session.start_time}</Text>
+        </TouchableOpacity>
+      ))}
+      
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('HeartRateScreen');

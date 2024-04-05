@@ -1,6 +1,7 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import BottomTabNavigator from '../../../components/BottomTabNavigator';
 import React, { useState, useEffect } from 'react';
+import { ScrollView } from 'react-native';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import base64 from 'base64-js';
@@ -43,7 +44,14 @@ function NewListeningSessionLanding({ navigation, route }) {
     </TouchableOpacity>
 
     <Text style={styles.title}>How to use Stethopy</Text>
-    
+    <View style={styles.container2}> 
+        <Text style={styles.title3}>
+          Hold the stethoscope up to your chest at the indicated positions.
+          {/* </Text>
+        <Text style={styles.title3}> */}
+          Record at each position for approximately 15 seconds in a quiet room.
+        </Text> 
+      </View>
       <TouchableOpacity
         onPress={async () => {
           await CreateNewSession();
@@ -72,6 +80,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white', // Change the background color as needed
   },
+  container2: {
+    flex: 1,
+    backgroundColor: '#9fc5e8', // Change the background color as needed
+    marginLeft: 20,
+    maxHeight: '33%',
+    width: '60%',
+    marginTop: '45%',
+    marginRight: 20,
+    borderRadius: '8%',
+    padding: '5%',
+    marginBottom: '-5%',
+  },
   title: {
     fontSize: 24, // Change the font size as needed
     marginBottom: 20, // Adjust spacing between title and button
@@ -92,6 +112,15 @@ const styles = StyleSheet.create({
     marginTop: 80,
     marginBottom: -100,
   },
+  title3: {
+    fontSize: 20, // Change the font size as needed
+    marginBottom: 20, // Adjust spacing between title and button
+    fontFamily: 'HelveticaNeue-Thin',
+    fontWeight: 'bold',
+    color: 'black',
+    alignSelf: 'center',
+    alignContent: 'center'
+  },
   description: {
     fontSize: 14,
     fontFamily: 'HelveticaNeue-Thin',
@@ -103,15 +132,15 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     justifyContent: 'center',
   },
-  customButton: {
-    backgroundColor: 'white',
-    borderRadius: 50,
-    position: 'absolute',
-    bottom: 300,
-    padding: 10,
-    width: 200,
-    alignItems: "center"
-  },
+  // customButton: {
+  //   backgroundColor: 'white',
+  //   borderRadius: 50,
+  //   position: 'absolute',
+  //   bottom: 300,
+  //   padding: 10,
+  //   width: 200,
+  //   alignItems: "center"
+  // },
   customButton2: {
     backgroundColor: '#9fc5e8',
     borderRadius: 50,

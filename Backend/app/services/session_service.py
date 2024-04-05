@@ -21,3 +21,6 @@ def delete_session(session_id):
 
 def get_sessions_by_patient(patient_id):
     return Session.query.filter_by(patient_id=patient_id).all()
+
+def get_all_sessions():
+    return Session.query.all()

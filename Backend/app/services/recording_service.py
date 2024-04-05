@@ -5,6 +5,8 @@ from dateutil.parser import parse
 from models.session import Session
 
 
+
+
 def create_audio_record(data):
     output_file_path = process_audio(data)
     recording_date = parse(data.get('recording_date'))
@@ -35,7 +37,7 @@ def create_audio_record(data):
     return new_audio_record
 
 def get_audio_records_by_session(session_id):
-    return AudioRecords.query.filter_by(session_id=session_id).all()
+    return db.session.query(AudioRecords).filter_by(session_id=session_id).all()
 
 def update_audio_record(record_id, data):
     audio_record = AudioRecords.query.get(record_id)

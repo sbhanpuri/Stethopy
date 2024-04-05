@@ -10,4 +10,4 @@ Additional self-diagnostic capabilities within the app using machine learning to
 Profile page, Home Page, Listen Page, Telehealth/Messaging Page
 
 ## Group Members
-Developed by Eric Wang, Rithvik Mani, Soham Nandi, Claire Hershenhouse, Safiya Bhanpuri, Anila Chundi, Danny Metzger
+Developed by Eric Wang, Claire Hershenhouse, Safiya Bhanpuri, Anila Chundi, Danny Metzger, Sean Guno, Jonathan Hsu, Sophie Yang, Praveen Vijayakumar

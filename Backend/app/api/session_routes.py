@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from services.session_service import *
 from services.audio_processing import *
+from services.recording_service import *
 import base64
 
 
@@ -35,6 +36,12 @@ def api_delete_session(session_id):
     if delete_session(session_id):
         return jsonify({'success': 'Session deleted'}), 200
     return jsonify({'error': 'Session not found'}), 404
+
+# GET /api/sessions to get all sessions
+@session_blueprint.route('/', methods=['GET'])
+def api_get_all_sessions():
+    sessions = get_all_sessions()
+    return jsonify([session.to_dict() for session in sessions])
 
 
 

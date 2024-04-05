@@ -163,12 +163,14 @@ const SessionSummary = ({ navigation, route }) => {
         }
         audioDictionary[recording_type] = item.encoded_audio;
         waveformPlotDictionary[recording_type] = item.waveform_plot;
+      
         
         // playbackEncodedDecodedAudio(item.encoded_audio);
         // audioDictionary[recording_type] = audioUrl;
         // console.log(item); 
-      }
+    }
       // console.log(item); 
+      console.log(waveformPlotDictionary.size);
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -192,6 +194,7 @@ const SessionSummary = ({ navigation, route }) => {
 
   useEffect(() => {
     fetchData(); // Fetch data on component mount
+
   }, []); // Empty dependency array means this runs once on component mount
   
   // fetchData();
@@ -222,26 +225,22 @@ const SessionSummary = ({ navigation, route }) => {
       </TouchableOpacity>
       
       {/* This is the new container for buttons and graphs */}
-      <View style={styles.sessionContent}>
-        <ScrollView style={styles.buttonColumn}>
-          {Object.keys(audioDictionary).map((recordingType) => (
-            <TouchableOpacity key={recordingType} onPress={() => playbackEncodedDecodedAudio(audioDictionary[recordingType])} style={styles.playbackButton}>
-              <Text>Play {recordingType}</Text>
+    
+      <ScrollView style={styles.sessionContent}>
+        {Object.keys(audioDictionary).map((recordingType) => (
+          <View key={recordingType} style={styles.sessionRow}>
+            <TouchableOpacity onPress={() => playbackEncodedDecodedAudio(audioDictionary[recordingType])} style={styles.playbackButton}>
+              <Text style={styles.text}>Play {recordingType}</Text>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-        <ScrollView style={styles.graphColumn}>
-          {Object.keys(waveformPlotDictionary).map((plotName) => (
-            waveformPlotDictionary[plotName] && (
+            {waveformPlotDictionary[recordingType] && (
               <Image
-                key={plotName}
-                source={{ uri: `data:image/png;base64,${waveformPlotDictionary[plotName]}` }}
+                source={{ uri: `data:image/png;base64,${waveformPlotDictionary[recordingType]}` }}
                 style={styles.plot}
               />
-            )
-          ))}
-        </ScrollView>
-      </View>
+            )}
+          </View>
+        ))}
+      </ScrollView>
       
       <BottomTabNavigator></BottomTabNavigator>
     </View>
@@ -267,6 +266,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'nowrap',
     backgroundColor: 'white', // Change the background color as needed
+    // overflowX: 'hidden',
   },
   title: {
     fontSize: 24, // Change the font size as needed
@@ -320,30 +320,59 @@ const styles = StyleSheet.create({
     resizeMode: 'contain', // Adjust the resizeMode as per your requirement
   },
   sessionContent: {
-    flexDirection: 'row',
-    flex: 1, // Make sure it takes up the whole horizontal space
-    marginTop: 20,
+    // Style for the overall container
+    flex: 1,
+    marginTop: "45%",
+    maxHeight: '40%',
+    marginLeft: '10%',
+    marginBottom: '27%',
+    maxWidth: '100%',
+    // overflowX: 'hidden',
+    // overflowY: 'auto',
   },
-  buttonColumn: {
-    flex: 3, // Takes up 30% of the space
-    marginRight: 10, // Optional spacing between columns
-  },
-  graphColumn: {
-    flex: 7, // Takes up 70% of the space
-    maxWidth: '70%', // Prevent it from taking more than 70% even if content is less
-  },
-  plot: {
-    width: '100%', // Take up all available width
-    height: 150, // Fixed height
-    resizeMode: 'contain',
+  sessionRow: {
+    // Style for each row containing a button and a graph
+    flexDirection: 'row', // Align items in a row
+    alignItems: 'center', // Center items vertically
+    marginBottom: 20, // Add space between rows
   },
   playbackButton: {
-    // Style for your buttons
-    marginBottom: 10, // Space between buttons
+    // Style for the playback button
+    marginRight: 10, // Add space between the button and the graph
     padding: 10,
     backgroundColor: '#9fc5e8', // Example background color
     borderRadius: 5,
+    // Width can be a fixed value or percentage, depending on your design
+    width: '20%',
+    height: '100%',
+    //width: 50, // Smaller width
+    //height: 50, // Smaller height
+    borderRadius: 35, // Adjusted for the smaller size to keep it circular
+    borderWidth: 1,
+    // alignContent:'center',
+    // textAlign: "center",
   },
+  plot: {
+    // Style for the waveform plot image
+    width: '70%', // Set width to take remaining space
+    height: '200%', // Set a fixed height for the image
+    resizeMode: 'contain', // Keep the aspect ratio of the image
+  },
+  recordButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50, // Smaller width
+    height: 50, // Smaller height
+    borderRadius: 35, // Adjusted for the smaller size to keep it circular
+    backgroundColor: 'white',
+    marginTop: 15, // Example to move the button down from the top of its container
+    marginLeft: 40,
+    borderWidth: 1, // Width of the border
+    borderColor: 'black',
+    },
+    text: {
+      fontWeight: '700',
+    }, 
 });
 
 export default SessionSummary;

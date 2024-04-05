@@ -10,6 +10,7 @@ matplotlib.use('Agg')  # Use the Agg backend
 import matplotlib.pyplot as plt
 from io import BytesIO
 from pathlib import Path
+import base64
 
 #import noisereduce
 
@@ -39,12 +40,12 @@ def process_audio(data):
     create_wave_file(cleaned_audio, output_file_path)
 
     #now output.wav contains audio
-    waveform_plot = generate_waveform_plot(output_file_path)
+    # waveform_plot = generate_waveform_plot(output_file_path)
 
-    plot_buffer = BytesIO()
-    waveform_plot.savefig(plot_buffer, format='png')
-    plot_buffer.seek(0)
-    plot_base64 = base64.b64encode(plot_buffer.read()).decode('utf-8')
+    # plot_buffer = BytesIO()
+    # waveform_plot.savefig(plot_buffer, format='png')
+    # plot_buffer.seek(0)
+    # plot_base64 = base64.b64encode(plot_buffer.read()).decode('utf-8')
 
     return str(output_file_path)
     # return jsonify({'data': output_filename, 'waveform_plot': plot_base64})
@@ -76,7 +77,11 @@ def generate_waveform_plot(output_filename):
     plt.xlabel('Time (s)')
     plt.xlim(0, time)
     plt.title('The Thing I Just Recorded!!')
-    return plt
+    plot_buffer = BytesIO()
+    plt.savefig(plot_buffer, format='png')
+    plot_buffer.seek(0)
+    plot_base64 = base64.b64encode(plot_buffer.read()).decode('utf-8')
+    return plot_base64
 
 def clean_audio(data):
     # Implement your audio processing logic here
@@ -91,7 +96,7 @@ def clean_audio(data):
 def create_wave_file(data, filename):
     FORMAT = pyaudio.paInt16
     CHANNELS = 1
-    RATE = 44100
+    RATE = 89100
     audio_bytes = base64.b64decode(data)
 
     filename = str(filename)
@@ -102,7 +107,12 @@ def create_wave_file(data, filename):
         wf.setframerate(RATE)
         wf.writeframes(audio_bytes)
 
-    #return filename
+def encode_audio(file_path):
+    with open(file_path, 'rb') as audio_file:
+        audio_bytes = audio_file.read()
+    base64_audio = base64.b64encode(audio_bytes).decode('utf-8')
+    return base64_audio
+
 
         
 

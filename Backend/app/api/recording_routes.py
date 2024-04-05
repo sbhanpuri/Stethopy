@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from services.recording_service import *
+from services.audio_processing import *
 
 recording_blueprint = Blueprint('recordings', __name__)
 
@@ -19,7 +20,21 @@ def api_create_recording():
 @recording_blueprint.route('/<int:session_id>', methods=['GET'])
 def api_get_recordings_by_session(session_id):
     recordings = get_audio_records_by_session(session_id)
-    return jsonify([recording.to_dict() for recording in recordings]), 200
+    print("recordings: ", recordings)
+    # convert recordings to list of dictionaries
+    recording_dicts = []
+    for recording in recordings:
+        # convert recording object to dictionary
+        recording_dict = recording.to_dict()
+        # encode audio file as base64 string
+        encoded_audio = encode_audio(recording.file_path)
+        recording_dict['encoded_audio'] = encoded_audio
+        # generate waveform plot
+        plot = generate_waveform_plot(recording.file_path)
+        recording_dict['waveform_plot'] = plot
+        recording_dicts.append(recording_dict)
+    print(recording_dicts)
+    return jsonify(recording_dicts), 200
 
 # PUT /api/recordings/{recordingId} to update a recording
 # can be used for re-recording
