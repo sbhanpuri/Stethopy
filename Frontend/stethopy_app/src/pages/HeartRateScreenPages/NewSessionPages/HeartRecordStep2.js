@@ -42,7 +42,10 @@ const HeartRecordStep2 = ({ navigation, route }) => {
     <Text style={styles.buttonText}>Previous Measurement</Text>
     </TouchableOpacity>
       
-    <RecordingButton navigation={navigation} recording_type={2} patient_id={1} />
+    <RecordingButton
+          recording_type = {2}
+          session_id = {sessionId}
+        />
       
     </View>
   );
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   customButton: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     bottom: 50,
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
     width: 150,
   },
   customButton2: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     bottom: 50,

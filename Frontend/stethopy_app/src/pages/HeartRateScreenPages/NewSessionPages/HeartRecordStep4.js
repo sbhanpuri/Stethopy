@@ -6,6 +6,7 @@ import Circle from '../../../components/images/Red_circle.svg.png';
 
 const HeartRecordStep4 = ({ navigation, route }) => {
   const { sessionId } = route.params;
+  // console.log('Session ID: ', sessionId);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -43,7 +44,10 @@ const HeartRecordStep4 = ({ navigation, route }) => {
         <Text style={styles.buttonText}>Previous Measurement</Text>
       </TouchableOpacity>
       
-      <RecordingButton navigation={navigation} recording_type={4} patient_id={1} />
+      <RecordingButton
+          recording_type = {4}
+          session_id = {sessionId}
+        />
       
     </View>
   );
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   customButton: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     bottom: 50,
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
     height: 55,
   },
   customButton2: {
-    backgroundColor: '#009FB7',
+    backgroundColor: '#9fc5e8',
     borderRadius: 50,
     position: 'absolute',
     bottom: 50,

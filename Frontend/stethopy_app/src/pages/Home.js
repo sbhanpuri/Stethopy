@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   button: {
     width: '90%', // Adjust the width as needed
     marginTop: 20, // Adjust the margin as needed
+    alignItems: 'center',
   },
   image: {
     width: 350,

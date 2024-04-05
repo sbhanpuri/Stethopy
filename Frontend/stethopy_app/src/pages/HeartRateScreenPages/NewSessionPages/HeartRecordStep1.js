@@ -48,7 +48,10 @@ const HeartRecordStep1 = ({ navigation, route }) => {
           prop={recordingStatus}
           
         ></RecordingButton> */}
-        <RecordingButton/>
+        <RecordingButton
+          recording_type = {1}
+          session_id = {sessionId}
+        />
       </View>
 
   );
