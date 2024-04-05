@@ -211,48 +211,47 @@ const SessionSummary = ({ navigation, route }) => {
         source={BannerImage}
         style={styles.image}
       />
-
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('HeartRateScreen');
-        console.log('You tapped the button!');
-      }}
-      style={styles.customButton2}
-    >
-    <Text style={styles.buttonText}>Done</Text>
-    </TouchableOpacity>
-    {Object.keys(audioDictionary).map((recordingType) => (
-        <View key={recordingType}>
-          <TouchableOpacity onPress={() => playbackEncodedDecodedAudio(audioDictionary[recordingType])}>
-            <Text>Play {recordingType}</Text>
-          </TouchableOpacity>
-          {audioDictionary[recordingType].waveform_plot && (
-            <Image
-              source={{ uri: `data:image/png;base64,${audioDictionary[recordingType].waveform_plot}` }}
-              style={{ width: 300, height: 150 }}
-            />
-          )}
-        </View>
-      ))}
-    <ScrollView style={styles.scrollViewContent}>
-    {Object.keys(waveformPlotDictionary).map((plotName) => (
-    waveformPlotDictionary[plotName] && (
-      <Image
-        key={plotName}
-        source={{ uri: `data:image/png;base64,${waveformPlotDictionary[plotName]}` }}
-        style={styles.plot}
-      />
-    )
-  ))}
-    </ScrollView>
-    <BottomTabNavigator></BottomTabNavigator>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('HeartRateScreen');
+          console.log('You tapped the button!');
+        }}
+        style={styles.customButton2}
+      >
+        <Text style={styles.buttonText}>Done</Text>
+      </TouchableOpacity>
+      
+      {/* This is the new container for buttons and graphs */}
+      <View style={styles.sessionContent}>
+        <ScrollView style={styles.buttonColumn}>
+          {Object.keys(audioDictionary).map((recordingType) => (
+            <TouchableOpacity key={recordingType} onPress={() => playbackEncodedDecodedAudio(audioDictionary[recordingType])} style={styles.playbackButton}>
+              <Text>Play {recordingType}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        <ScrollView style={styles.graphColumn}>
+          {Object.keys(waveformPlotDictionary).map((plotName) => (
+            waveformPlotDictionary[plotName] && (
+              <Image
+                key={plotName}
+                source={{ uri: `data:image/png;base64,${waveformPlotDictionary[plotName]}` }}
+                style={styles.plot}
+              />
+            )
+          ))}
+        </ScrollView>
+      </View>
+      
+      <BottomTabNavigator></BottomTabNavigator>
     </View>
-  );
+  );  
 };
 
 
 
 const styles = StyleSheet.create({
+
   scrollViewContent: {
     // alignItems: 'center',
     top: '13%',
@@ -319,6 +318,31 @@ const styles = StyleSheet.create({
     marginTop: 145,
     marginBottom: -150,
     resizeMode: 'contain', // Adjust the resizeMode as per your requirement
+  },
+  sessionContent: {
+    flexDirection: 'row',
+    flex: 1, // Make sure it takes up the whole horizontal space
+    marginTop: 20,
+  },
+  buttonColumn: {
+    flex: 3, // Takes up 30% of the space
+    marginRight: 10, // Optional spacing between columns
+  },
+  graphColumn: {
+    flex: 7, // Takes up 70% of the space
+    maxWidth: '70%', // Prevent it from taking more than 70% even if content is less
+  },
+  plot: {
+    width: '100%', // Take up all available width
+    height: 150, // Fixed height
+    resizeMode: 'contain',
+  },
+  playbackButton: {
+    // Style for your buttons
+    marginBottom: 10, // Space between buttons
+    padding: 10,
+    backgroundColor: '#9fc5e8', // Example background color
+    borderRadius: 5,
   },
 });
 
