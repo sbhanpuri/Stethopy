@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   scrollViewContent: {
+    // maxWidth: '10%',
     alignItems: 'center',
     paddingTop: 20,
     paddingBottom: 150,

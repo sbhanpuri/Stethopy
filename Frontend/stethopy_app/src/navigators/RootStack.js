@@ -39,7 +39,7 @@ const RootStack = () => {
         <Stack.Screen name="HeartRateScreen" component={HeartRateScreen} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="ListeningSessions" component={ListeningSessions} />
-        <Stack.Screen name="SessionSummary" component={SessionSummary} />
+        <Stack.Screen name="SessionSummary" component={SessionSummary} initialParams={{ sessionId }}/>
         {/* <Stack.Screen name="HeartRecordStep1" component={HeartRecordStep1} />
         <Stack.Screen name="HeartRecordStep2" component={HeartRecordStep2} />
         <Stack.Screen name="HeartRecordStep3" component={HeartRecordStep3} />

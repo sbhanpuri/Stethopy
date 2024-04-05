@@ -4,25 +4,31 @@ import { useNavigation } from '@react-navigation/native';
 const LogInButton = () => {
   const navigation = useNavigation();
   return (
-    <View style={styles.logInButton}>
-      <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('Log In')}>          
-          <Text style={styles.text}> Log In</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.logInButton}>
+        <TouchableOpacity style={styles.verticalContainer} onPress={() => navigation.navigate('Log In')}>          
+            <Text style={styles.text}> Log In</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   logInButton: {
-    position: 'absolute',
-    top: 350,
-    right: 145,
-    padding: 12,
+    marginTop: 130,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
     borderRadius: 8,
     backgroundColor: '#9fc5e8',
     width: 100,
     height: 53,
-    alignContent: 'center',
   },
   text: {
     fontSize: 23,

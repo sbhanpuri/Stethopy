@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native';
  * Not to be used in actual app design, but contains logic for recording button!
  */
 
-function RecordingButton({ recording_type, patient_id }) {
+function RecordingButton({ recording_type, session_id }) {
   // console.log(prop);
   const navigation = useNavigation();
   const [showTimer, setShowTimer] = useState(false);
@@ -216,13 +216,13 @@ function RecordingButton({ recording_type, patient_id }) {
             const jsonPayload = {
               audio_data: base64String,
               patient_id: 5,
-              session_id: 16,
-              recording_type: 1,
+              session_id: session_id,
+              recording_type: recording_type,
               recording_date: new Date().toISOString(),
             };
             // Send the audio file to the Flask backend
             const response = await axios.post('http://10.193.136.224:5000/recordings/create', jsonPayload);
-            console.log(response);
+            // console.log(response);
   
             console.log('Successfully sent audio file to backend and retrieved output.wav from post request');
   

@@ -6,6 +6,38 @@ import BannerImage from '../../../components/images/HeartAndBanner.png';
 
 
 const PastSessionListeningPage = ({ navigation }) => {
+  const fetchSessions = async () => {
+    try {
+      const response = await axios.get(`http://10.193.136.224:5000/sessions`);
+      // const audios = Object.values(response.audio_records)
+      // list of audio recordings as dict 
+      const sessions = response.data;
+      console.log("about to print array")
+      console.log(sessions);
+      for (let i = 0; i < arrayOfAudioRecords.length; i++) {
+        const item = arrayOfAudioRecords[i];
+        // const audioUrl = decodeAudio(item.encoded_audio);
+        const recording_type = item.recording_type;
+        if (recording_type == 1) {
+          setWaveformPlot1(item.waveform_plot);
+        } else if (recording_type == 2) {
+          setWaveformPlot2(item.waveform_plot);
+        } else if (recording_type == 3) {
+          setWaveformPlot3(item.waveform_plot);
+        } else if (recording_type == 4) {
+          setWaveformPlot4(item.waveform_plot);
+        }
+        audioDictionary[recording_type] = item.encoded_audio;
+        
+        // playbackEncodedDecodedAudio(item.encoded_audio);
+        // audioDictionary[recording_type] = audioUrl;
+        // console.log(item); 
+      }
+      // console.log(item); 
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
