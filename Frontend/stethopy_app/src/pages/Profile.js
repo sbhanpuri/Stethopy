@@ -112,7 +112,7 @@ const ProfilePage = () => {
         <Text>Personal Information</Text>
       </TouchableOpacity>
       {!isPersonalInfoCollapsed && (
-        <View style={styles.infoContainer}>
+        <View style={styles.personalinfoContainer}>
           {renderEditableFields('name', 'Name')}
           {renderEditableFields('dateOfBirth', 'Date of Birth')}
           {renderEditableFields('phoneNumber', 'Phone Number')}
@@ -176,13 +176,20 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   collapseButton: {
-    marginTop: 20,
+    marginBottom: 10,
     padding: 10,
     backgroundColor: '#9fc5e8',
     borderRadius: 8,
   },
   infoContainer: {
-    marginTop: 10,
+    marginBottom: 100,
+    borderWidth: 1,
+    borderColor: 'lightblue',
+    padding: 10,
+    width: 250,
+  },
+  personalinfoContainer: {
+    marginBottom: 50,
     borderWidth: 1,
     borderColor: 'lightblue',
     padding: 10,
@@ -209,8 +216,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   saveButton: {
-    marginTop: 20,
-    marginBottom: 40,
+    position: 'absolute',
+    top: 50, // Adjust to control distance below editButton
+    right: 10,
     padding: 10,
     backgroundColor: 'lightgreen',
     borderRadius: 8,

@@ -6,6 +6,7 @@ import * as FileSystem from 'expo-file-system';
 import base64 from 'base64-js';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
+import Stockimg from '../../../components/images/doctor_image.webp';
 
 /**
  * !!!!!!
@@ -39,10 +40,16 @@ function NewListeningSessionLanding({ navigation, route }) {
       }}
       style={styles.customButton2}
     >
-    <Text style={styles.buttonText}>All Recordings</Text>
-    </TouchableOpacity>
+      <Text style={styles.buttonText}>All Recordings</Text>
+      </TouchableOpacity>
 
     <Text style={styles.title}>How to use Stethopy</Text>
+    <Image 
+          source={Stockimg}
+          style={styles.image}
+        />
+
+      
     
       <TouchableOpacity
         onPress={async () => {
@@ -70,47 +77,35 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'white', // Change the background color as needed
+    backgroundColor: 'white',
   },
   title: {
-    fontSize: 24, // Change the font size as needed
-    marginBottom: 20, // Adjust spacing between title and button
-    fontFamily: 'HelveticaNeue-Thin',
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#C42021',
     alignSelf: 'center',
     marginTop: 80,
-    marginBottom: -100,
-  },
-  title2: {
-    fontSize: 24, // Change the font size as needed
-    marginBottom: 20, // Adjust spacing between title and button
+    marginBottom: 20,
     fontFamily: 'HelveticaNeue-Thin',
-    fontWeight: 'bold',
-    color: '#C42021',
-    alignSelf: 'center',
-    marginTop: 80,
-    marginBottom: -100,
-  },
-  description: {
-    fontSize: 14,
-    fontFamily: 'HelveticaNeue-Thin',
-    marginBottom: 15,
-    fontWeight: 'bold',
-    marginTop: 125,
-    marginBottom: -150,
-    color: '#C42021',
-    // backgroundColor: 'red',
-    justifyContent: 'center',
   },
   customButton: {
     backgroundColor: 'white',
+    borderColor: '#C42021', // Add a border for emphasis
+    borderWidth: 2,
     borderRadius: 50,
-    position: 'absolute',
-    bottom: 300,
-    padding: 10,
+    paddingVertical: 15, // Increase vertical padding for a larger button
+    paddingHorizontal: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
     width: 200,
-    alignItems: "center"
+  },
+  title2: {
+    fontSize: 18, // Adjust font size to fit better within the button
+    fontWeight: 'bold',
+    color: '#C42021',
+    textAlign: 'center',
+    fontFamily: 'HelveticaNeue-Thin',
   },
   customButton2: {
     backgroundColor: '#9fc5e8',
@@ -121,18 +116,6 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 150,
   },
-  recordButton: {
-    backgroundColor: 'red',
-    borderRadius: 50,
-    marginTop: 160,
-    marginBottom: -175,
-    width: 200,
-    height: 50,
-  },
-  button: {
-    width: '90%', // Adjust the width as needed
-    marginTop: 20, // Adjust the margin as needed
-  },
   buttonText: {
     color: 'black',
     textAlign: 'center',
@@ -140,21 +123,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 500,
-    height: 300,
-    marginTop: 145,
-    marginBottom: -150,
-    resizeMode: 'contain', // Adjust the resizeMode as per your requirement
+    width: 300,
+    height: 200,
+    marginTop: 20,
+    resizeMode: 'contain',
   },
-  circle: {
-    position: 'relative',
-    left: 19,
-    bottom: -37,
-    padding: 15, //change the diameter of the red circle
-    width: 30,
-    height: 30,
-    marginTop: 7,
-  }
 });
 
 export default NewListeningSessionLanding;
